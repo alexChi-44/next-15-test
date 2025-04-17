@@ -14,7 +14,8 @@ export default function Sidebar() {
             className="rounded-full"
           />
           <div>
-            <h2 className="text-lg font-semibold">John Doe</h2>
+            <h2 className="text-lg font-semibold">
+                al Chi</h2>
             <p className="text-sm text-gray-500">Online</p>
           </div>
         </div>
