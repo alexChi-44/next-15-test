@@ -13,4 +13,10 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 
+eslintConfig.push({
+  rules: {
+    "no-console": ["error", { allow: ["warn", "error"] }],
+  },
+});
+
 export default eslintConfig;

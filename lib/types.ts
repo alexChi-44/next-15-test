@@ -6,8 +6,8 @@ export interface Chat {
   }
   
   export interface Message {
-    id: string;
+    authorId: number;
     text: string;
-    sender: 'user' | 'other';
+    isUser: boolean;
     time: string;
   }

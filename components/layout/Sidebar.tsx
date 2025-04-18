@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import { FaceIcon, ImageIcon, SunIcon } from "@radix-ui/react-icons"
+import Image from "next/image";
+import { FaceIcon, ImageIcon } from "@radix-ui/react-icons";
 
 export default function Sidebar() {
   return (
-    <div className="w-80 bg-gray-100 border-r border-gray-200 flex flex-col">
+    <div className="hidden sm:flex w-80 min-w-48 bg-gray-100 border-r border-gray-200 flex-col">
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <Image
@@ -14,8 +14,7 @@ export default function Sidebar() {
             className="rounded-full"
           />
           <div>
-            <h2 className="text-lg font-semibold">
-                al Chi</h2>
+            <h2 className="text-lg font-semibold">al Chi</h2>
             <p className="text-sm text-gray-500">Online</p>
           </div>
         </div>
