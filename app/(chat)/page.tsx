@@ -5,6 +5,7 @@ import ChatWindow from "@/components/ui/ChatWindow";
 import { Message } from "@/lib/types";
 import { useUserStore } from "@/lib/store/user";
 import { useRouter } from "next/navigation";
+import { ChatSkeleton } from "@/components/ui/skeletons/ChatSkeleton";
 
 const messg: Message[] = [
   { authorId: 1, text: "Hey, how are you?", isUser: false, time: "10:30" },
@@ -78,9 +79,9 @@ export default function Home() {
     }
   }, [router, user.isAuthenticated]);
 
-  if (!user.isAuthenticated) {
-    return null;
-  }
+  // if (!user.isAuthenticated) {
+  //   return <ChatSkeleton />;
+  // }
 
   return (
     <div className="flex h-full">

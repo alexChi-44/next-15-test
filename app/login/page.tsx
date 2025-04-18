@@ -19,7 +19,7 @@ export default function Login() {
       isAuthenticated: true,
       avatarUrl: "/default-avatar.png",
     });
-    router.push("/chat");
+    router.push("/");
   };
 
   return (
