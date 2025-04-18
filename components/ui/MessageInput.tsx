@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-export default function MessageInput({ setNewMessage }) {
+export default function MessageInput({
+  setNewMessage,
+}: {
+  setNewMessage: (text: string) => void;
+}) {
   const [message, setMessage] = useState("");
 
   const handleSend = () => {

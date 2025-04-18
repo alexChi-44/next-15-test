@@ -7,6 +7,7 @@ export default function ChatWindow({
   setNewMessage,
 }: {
   messages: Message[];
+  setNewMessage: (text: string) => void;
 }) {
   return (
     <div className="flex-1 flex flex-col">

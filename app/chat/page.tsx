@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChatList from "@/components/ui/ChatList";
 import ChatWindow from "@/components/ui/ChatWindow";
 import { Message } from "@/lib/types";
+import { useUserStore } from "@/lib/store/user";
+import { useRouter } from "next/navigation";
 
 const messg: Message[] = [
   { authorId: 1, text: "Hey, how are you?", isUser: false, time: "10:30" },
@@ -16,7 +18,10 @@ const authrs = [
 ];
 
 export default function Home() {
+  const router = useRouter();
+  const { user, setUser, logout } = useUserStore();
   const [authors, setAuthors] = useState(authrs);
+
   const [chats, setChats] = useState([
     {
       id: 0,
@@ -35,7 +40,7 @@ export default function Home() {
   ]);
   const [activeChat, setActiveChat] = useState(0);
 
-  function setNewMessage(text) {
+  function setNewMessage(text: string) {
     const now = new Date();
     const time = `${now.getHours()}:${now
       .getMinutes()
@@ -54,7 +59,29 @@ export default function Home() {
       })
     );
   }
-  console.log(chats);
+
+  useEffect(() => {
+    if (!user.id) {
+      setUser({
+        id: 1,
+        avatarUrl: "",
+        email: "",
+        isAuthenticated: true,
+        name: "Alex Chi",
+      });
+    }
+  }, [setUser, user]);
+
+  useEffect(() => {
+    if (!user.isAuthenticated) {
+      router.push("/login");
+    }
+  }, [router, user.isAuthenticated]);
+
+  if (!user.isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="flex h-full">
       <ChatList
