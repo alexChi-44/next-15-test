@@ -22,6 +22,7 @@ export default function MessageBubble({
 }: MessageBubbleProps) {
   const isUser = message.isUser;
   const [showMenu, setShowMenu] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
 
@@ -39,8 +40,11 @@ export default function MessageBubble({
     setShowMenu(false);
   };
 
-  const handleRightClick = (event) => {
-    event.preventDefault(); // Disable default behavior
+  const handleRightClick = (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    e.preventDefault();
+    setPosition({ x, y: y - 10 });
     setShowMenu(true);
   };
 
@@ -54,7 +58,7 @@ export default function MessageBubble({
         bubbleRef.current &&
         !bubbleRef.current.contains(event.target as Node)
       ) {
-        console.log("click outside");
+        console.log("click outside !!!");
         setShowMenu(false);
       }
     };
@@ -89,6 +93,7 @@ export default function MessageBubble({
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           menuRef={menuRef}
+          position={position}
         />
       )}
     </div>
