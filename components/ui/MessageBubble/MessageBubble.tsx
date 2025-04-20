@@ -2,11 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Message } from "@/lib/types";
-import {
-  DotsHorizontalIcon,
-  Pencil1Icon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import MessageMenue from "./MessageBubbleMenue";
 
 interface MessageBubbleProps {
@@ -51,14 +47,12 @@ export default function MessageBubble({
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log(menuRef.current, "menut ref current");
       if (
         menuRef.current &&
         !menuRef.current.contains(event.target as Node) &&
         bubbleRef.current &&
         !bubbleRef.current.contains(event.target as Node)
       ) {
-        console.log("click outside !!!");
         setShowMenu(false);
       }
     };

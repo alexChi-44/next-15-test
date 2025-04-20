@@ -1,27 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import MessageBubble from "./MessageBubble/MessageBubble";
 import MessageInput from "./MessageInput";
 import { Message } from "@/lib/types";
 
+type TextMessage = {
+  id: number | null;
+  text: string;
+};
+
 export default function ChatWindow({
   messages,
   setNewMessage,
+  // handleEditMessage,
+  handleDeleteMessage,
 }: {
   messages: Message[];
-  setNewMessage: (text: string) => void;
+  setNewMessage: (text: string, id: number | null) => void;
+  // handleEditMessage: (message: Message) => void;
+  handleDeleteMessage: (message: Message) => void;
 }) {
-  const handleEditMessage = (message: Message) => {
-    // In a real app, you would implement the edit functionality here
-    // For example, open a modal or inline edit form
-    console.warn("Edit message:", message.text);
-  };
+  const [message, setMessage] = useState<TextMessage>({ id: null, text: "" });
+  const TextInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDeleteMessage = (message: Message) => {
-    // In a real app, you would implement the delete functionality here
-    // For example, call an API to delete the message
-    console.warn("Delete message:", message.text);
+  const onEdit = (message: TextMessage) => {
+    TextInputRef.current?.focus();
+    setMessage({ id: message.id, text: message.text });
+    // handleEditMessage(message);
   };
 
   return (
@@ -31,12 +37,17 @@ export default function ChatWindow({
           <MessageBubble
             key={i}
             message={message}
-            onEdit={handleEditMessage}
+            onEdit={onEdit}
             onDelete={handleDeleteMessage}
           />
         ))}
       </div>
-      <MessageInput setNewMessage={setNewMessage} />
+      <MessageInput
+        message={message}
+        setMessage={setMessage}
+        setNewMessage={setNewMessage}
+        ref={TextInputRef}
+      />
     </div>
   );
 }
