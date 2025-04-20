@@ -10,7 +10,7 @@ export default function Sidebar() {
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <Image
-            src="/vercel.svg"
+            src="/dogs.svg"
             alt="User Avatar"
             width={40}
             height={40}
