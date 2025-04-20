@@ -1,5 +1,5 @@
 import { Chat } from "@/lib/types";
-import { Dispatch, SetStateAction } from "react";
+// import { Dispatch, SetStateAction } from "react";
 
 export default function ChatList({
   chats = [],
@@ -8,7 +8,8 @@ export default function ChatList({
 }: {
   chats: Chat[];
   activeChat: number;
-  setActiveChat: Dispatch<SetStateAction<number>>;
+  // setActiveChat: Dispatch<SetStateAction<number>>;
+  setActiveChat: (activeChat: number) => void;
 }) {
   return (
     <div className="w-80 bg-gray-50 border-r border-gray-200 overflow-y-auto">

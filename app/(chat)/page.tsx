@@ -34,6 +34,7 @@ export default function Home() {
   const router = useRouter();
   const { user, setUser } = useUserStore(); //logout
   // const [authors, setAuthors] = useState(authrs);
+  const [mbIsSelected, setMbIsSelected] = useState(false);
 
   const [chats, setChats] = useState([
     {
@@ -126,23 +127,37 @@ export default function Home() {
     }
   }, [router, user.isAuthenticated]);
 
+  function onMbBack() {
+    setMbIsSelected(true);
+  }
+  function onSetActiveChat(activeChat: number) {
+    setMbIsSelected(false);
+    setActiveChat(activeChat);
+  }
+
   if (!user.isAuthenticated) {
     return <ChatSkeleton />;
   }
 
   return (
     <div className="flex h-full">
-      <ChatList
-        chats={chats}
-        activeChat={activeChat}
-        setActiveChat={setActiveChat}
-      />
-      <ChatWindow
-        messages={chats[activeChat].messages}
-        setNewMessage={setNewMessage}
-        // handleEditMessage={handleEditMessage}
-        handleDeleteMessage={handleDeleteMessage}
-      />
+      <div className={`${mbIsSelected ? "block" : "hidden"} sm:block`}>
+        <ChatList
+          chats={chats}
+          activeChat={activeChat}
+          setActiveChat={onSetActiveChat}
+        />
+      </div>
+
+      {!mbIsSelected ? (
+        <ChatWindow
+          messages={chats[activeChat].messages}
+          setNewMessage={setNewMessage}
+          // handleEditMessage={handleEditMessage}
+          handleDeleteMessage={handleDeleteMessage}
+          onMBBack={onMbBack}
+        />
+      ) : null}
     </div>
   );
 }
