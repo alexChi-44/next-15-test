@@ -1,10 +1,11 @@
-import { Message } from "@/lib/types";
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
+import { RefObject } from "react";
 
 interface MessageBubbleProps {
-  message: Message;
-  handleEdit?: (message: Message) => void;
-  handleDelete?: (message: Message) => void;
+  handleEdit?: () => void;
+  handleDelete?: () => void;
+  menuRef: RefObject<HTMLDivElement | null>;
+  position: { x: number; y: number };
 }
 
 export default function MessageMenue({

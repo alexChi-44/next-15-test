@@ -4,7 +4,7 @@ import { ExitIcon, FaceIcon, ImageIcon } from "@radix-ui/react-icons";
 import { useUserStore } from "@/lib/store/user";
 
 export default function Sidebar() {
-  const { user, setUser, logout } = useUserStore();
+  const { user, logout } = useUserStore(); //setUser
   return (
     <div className="hidden sm:flex w-80 min-w-48 bg-gray-100 border-r border-gray-200 flex-col">
       <div className="p-4 border-b border-gray-200">
