@@ -4,7 +4,7 @@ import { ExitIcon, FaceIcon, ImageIcon } from "@radix-ui/react-icons";
 import { useUserStore } from "@/lib/store/user";
 
 export default function Sidebar() {
-  const { user, logout } = useUserStore(); //setUser
+  const { user } = useUserStore(); //setUser logout
   return (
     <div className="hidden sm:flex w-80 min-w-48 bg-gray-100 border-r border-gray-200 flex-col">
       <div className="p-4 border-b border-gray-200">
@@ -36,7 +36,10 @@ export default function Sidebar() {
           </li>
           <li
             className="flex items-center p-2 hover:bg-gray-200 rounded cursor-pointer text-red-600"
-            onClick={logout}
+            // onClick={logout}
+            onClick={() => {
+              sessionStorage.removeItem("ST_app_auth");
+            }}
           >
             <ExitIcon className="w-5 h-5 mr-2" />
             <span>Logout</span>

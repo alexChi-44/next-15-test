@@ -13,6 +13,7 @@ interface User {
 interface UserStore {
   user: User;
   setUser: (user: Partial<User>) => void;
+  setAuth: (isAuthenticated: boolean) => void;
   logout: () => void;
 }
 
@@ -22,13 +23,19 @@ export const useUserStore = create<UserStore>((set) => ({
     id: null,
     name: '',
     email: '',
-    isAuthenticated: true,
+    isAuthenticated: false,
     avatarUrl: ''
   },
   setUser: (user) =>
     set((state) => ({
       user: { ...state.user, ...user },
     })),
+
+  setAuth: (isAuthenticated) =>
+    set((state) => ({
+      user: { ...state.user, isAuthenticated },
+    })),
+    
   logout: () =>
     set({
       user: { id: null, avatarUrl: '', name: '', email: '', isAuthenticated: false },

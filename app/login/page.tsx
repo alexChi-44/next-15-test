@@ -11,14 +11,18 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login - in real app, you would call an API
-    setUser({
+
+    const userData = {
       id: 1,
       name: "John Doe",
-      email,
+      email: email,
+      password: password,
       isAuthenticated: true,
       avatarUrl: "/default-avatar.png",
-    });
+    };
+
+    setUser(userData);
+    sessionStorage.setItem("ST_app_auth", JSON.stringify(userData));
     router.push("/");
   };
 
@@ -56,9 +60,18 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+            className="cursor-pointer w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
           >
             Login
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              sessionStorage.removeItem("ST_app_auth");
+            }}
+            className="cursor-pointer w-full text-gray-500 underline text-sm hover:text-gray-700"
+          >
+            Clear Data
           </button>
         </div>
       </form>
