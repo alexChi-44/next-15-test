@@ -1,12 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, MouseEvent } from "react";
 import { Message } from "@/lib/types";
-import {
-  DotsHorizontalIcon,
-  Pencil1Icon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
 import MessageMenue from "./MessageBubbleMenue";
 
 interface MessageBubbleProps {
@@ -40,7 +35,7 @@ export default function MessageBubble({
     setShowMenu(false);
   };
 
-  const handleRightClick = (e) => {
+  const handleRightClick = (e: MouseEvent) => {
     const x = e.clientX;
     const y = e.clientY;
     e.preventDefault();
@@ -50,15 +45,13 @@ export default function MessageBubble({
 
   // Close menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      console.log(menuRef.current, "menut ref current");
+    const handleClickOutside = (event: globalThis.MouseEvent) => {
       if (
         menuRef.current &&
         !menuRef.current.contains(event.target as Node) &&
         bubbleRef.current &&
         !bubbleRef.current.contains(event.target as Node)
       ) {
-        console.log("click outside !!!");
         setShowMenu(false);
       }
     };
@@ -82,9 +75,6 @@ export default function MessageBubble({
         } cursor-pointer group`}
         onContextMenu={handleRightClick}
       >
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <DotsHorizontalIcon className="w-4 h-4" />
-        </div>
         <p>{message.text}</p>
         <span className="text-xs opacity-70">{message.time}</span>
       </div>

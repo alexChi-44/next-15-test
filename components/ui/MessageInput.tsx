@@ -1,18 +1,20 @@
-"use client";
-
-import { useState } from "react";
+import { Dispatch, RefObject, SetStateAction } from "react";
 
 export default function MessageInput({
   setNewMessage,
+  message,
+  setMessage,
+  ref,
 }: {
-  setNewMessage: (text: string) => void;
+  setNewMessage: (text: string, id: number | null) => void;
+  message: { text: string; id: number | null };
+  setMessage: Dispatch<SetStateAction<{ text: string; id: number | null }>>;
+  ref: RefObject<HTMLInputElement | null>;
 }) {
-  const [message, setMessage] = useState("");
-
   const handleSend = () => {
-    if (message.trim()) {
-      setNewMessage(message);
-      setMessage("");
+    if (message.text.trim()) {
+      setNewMessage(message.text, message.id);
+      setMessage({ id: null, text: "" });
     }
   };
 
@@ -26,9 +28,12 @@ export default function MessageInput({
     <div className="p-4 bg-gray-100 border-t border-gray-200">
       <div className="flex items-center space-x-2">
         <input
+          ref={ref}
           type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={message.text}
+          onChange={(e) =>
+            setMessage((prev) => ({ ...prev, text: e.target.value }))
+          }
           onKeyDown={onKeyDown}
           placeholder="Type a message..."
           className="flex-1 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
