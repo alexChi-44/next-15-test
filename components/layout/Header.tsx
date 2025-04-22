@@ -14,7 +14,7 @@ export default function Header({
       >
         <HamburgerMenuIcon className="w-6 h-6" />
       </button>
-      <h1 className="text-lg font-semibold">ALChat upd</h1>
+      <h1 className="text-lg font-semibold">ALChat</h1>
     </div>
   );
 }
