@@ -13,13 +13,11 @@ type TextMessage = {
 export default function ChatWindow({
   messages,
   setNewMessage,
-  // handleEditMessage,
   handleDeleteMessage,
   onMBBack,
 }: {
   messages: Message[];
   setNewMessage: (text: string, id: number | null) => void;
-  // handleEditMessage: (message: Message) => void;
   handleDeleteMessage: (message: Message) => void;
   onMBBack: () => void;
 }) {
@@ -29,34 +27,37 @@ export default function ChatWindow({
   const onEdit = (message: TextMessage) => {
     TextInputRef.current?.focus();
     setMessage({ id: message.id, text: message.text });
-    // handleEditMessage(message);
   };
 
   return (
-    <div className="flex-1 flex flex-col">
-      <div className="flex-1 p-4 overflow-y-auto">
-        {messages.map((message, i) => (
-          <MessageBubble
-            key={i}
-            message={message}
-            onEdit={onEdit}
-            onDelete={handleDeleteMessage}
-          />
-        ))}
+    <div className="flex-1 flex flex-col h-full max-h-screen relative">
+      <div className="flex-1 overflow-y-auto no-scrollbar">
+        <div className="p-4 space-y-4">
+          {messages.map((message, i) => (
+            <MessageBubble
+              key={i}
+              message={message}
+              onEdit={onEdit}
+              onDelete={handleDeleteMessage}
+            />
+          ))}
+        </div>
       </div>
-      <MessageInput
-        message={message}
-        setMessage={setMessage}
-        setNewMessage={setNewMessage}
-        ref={TextInputRef}
-      />
-      <div className="sm:hidden">
-        <button
-          onClick={onMBBack}
-          className="absolute left-4 bottom-40 flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 bg-white hover:bg-gray-100 hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-        >
-          <ArrowLeftIcon className="w-6 h-6 text-gray-600" />
-        </button>
+      <div className="sticky bottom-0 bg-white border-t border-gray-200">
+        <MessageInput
+          message={message}
+          setMessage={setMessage}
+          setNewMessage={setNewMessage}
+          ref={TextInputRef}
+        />
+        <div className="sm:hidden">
+          <button
+            onClick={onMBBack}
+            className="absolute left-4 -top-14 flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 bg-white hover:bg-gray-100 hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          >
+            <ArrowLeftIcon className="w-6 h-6 text-gray-600" />
+          </button>
+        </div>
       </div>
     </div>
   );

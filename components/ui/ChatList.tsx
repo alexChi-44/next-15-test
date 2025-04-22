@@ -1,5 +1,4 @@
 import { Chat } from "@/lib/types";
-// import { Dispatch, SetStateAction } from "react";
 
 export default function ChatList({
   chats = [],
@@ -8,11 +7,10 @@ export default function ChatList({
 }: {
   chats: Chat[];
   activeChat: number;
-  // setActiveChat: Dispatch<SetStateAction<number>>;
   setActiveChat: (activeChat: number) => void;
 }) {
   return (
-    <div className="w-80 bg-gray-50 border-r border-gray-200 overflow-y-auto">
+    <div className="w-80 bg-gray-50 border-r border-gray-200 h-full overflow-y-auto no-scrollbar">
       {chats.map((chat, i) => (
         <div
           key={chat.id}
@@ -31,7 +29,7 @@ export default function ChatList({
               <p
                 className={`text-sm ${
                   activeChat === i ? "text-white" : "text-gray-500"
-                }  truncate`}
+                } truncate`}
               >
                 {chat.lastMessage}
               </p>
