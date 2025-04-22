@@ -23,6 +23,7 @@ html, body {
   width: 100%;
   overscroll-behavior: none;
   touch-action: manipulation;
+  min-height: -webkit-fill-available; /* iOS viewport fix */
 }
 
 body {
@@ -31,6 +32,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .h-screen {
+    height: -webkit-fill-available;
+  }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

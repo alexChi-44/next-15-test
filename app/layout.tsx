@@ -29,14 +29,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthGuard>
-          <div className="flex h-screen overflow-hidden">
+          <div className="flex h-[100dvh] overflow-hidden">
             <Sidebar
               isOpen={isSidebarOpen}
               onClose={() => setIsSidebarOpen(false)}
             />
             <div className="flex-1 flex flex-col">
               <Header setIsOpen={setIsSidebarOpen} />
-              <main className="flex-1 overflow-y-auto bg-white">
+              <main className="flex-1 overflow-hidden bg-white">
                 {children}
               </main>
             </div>
