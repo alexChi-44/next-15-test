@@ -50,7 +50,7 @@ export default function ChatWindow({
         setNewMessage={setNewMessage}
         ref={TextInputRef}
       />
-      <div className=" sm:hidden">
+      <div className="sm:hidden">
         <button
           onClick={onMBBack}
           className="absolute left-4 bottom-40 flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 bg-white hover:bg-gray-100 hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"

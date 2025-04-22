@@ -25,7 +25,7 @@ export default function MessageInput({
   };
 
   return (
-    <div className="p-4 bg-gray-100 border-t border-gray-200">
+    <div className="p-4">
       <div className="flex items-center space-x-2">
         <input
           ref={ref}
