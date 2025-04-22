@@ -32,7 +32,7 @@ export default function ChatWindow({
   return (
     <div className="flex-1 flex flex-col h-full max-h-screen relative">
       <div
-        className="flex-1 overflow-y-auto overscroll-contain touch-pan-y pb-4"
+        className="flex-1 overflow-y-auto"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div className="p-4 space-y-4">

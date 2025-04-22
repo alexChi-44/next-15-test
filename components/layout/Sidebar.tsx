@@ -21,7 +21,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity sm:hidden z-40 overflow-hidden touch-none"
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity sm:hidden z-40 overflow-hidden"
           onClick={onClose}
         />
       )}
@@ -33,7 +33,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         ${isOpen ? "translate-x-0" : "-translate-x-full"} 
         sm:translate-x-0 transition-transform duration-300 ease-in-out
         w-80 min-w-48 bg-gray-100 border-r border-gray-200 flex-col z-50
-        flex overflow-y-auto max-h-screen touch-pan-y
+        flex overflow-y-auto max-h-screen
       `}
       >
         <div className="p-4 border-b border-gray-200">
