@@ -22,7 +22,7 @@ export default function ChatWindow({
   onMBBack: () => void;
 }) {
   const [message, setMessage] = useState<TextMessage>({ id: null, text: "" });
-  const TextInputRef = useRef<HTMLTextAreaElement>(null);
+  const TextInputRef = useRef<HTMLInputElement>(null);
 
   const onEdit = (message: TextMessage) => {
     TextInputRef.current?.focus();
@@ -30,18 +30,8 @@ export default function ChatWindow({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-[100dvh] sm:h-full">
+    <div className="flex-1 flex flex-col h-full max-h-screen relative">
       <div className="flex-1 overflow-y-auto no-scrollbar">
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 p-4">
-          <div className="flex items-center">
-            <button
-              onClick={onMBBack}
-              className="sm:hidden mr-4 p-2 hover:bg-gray-100 rounded-full"
-            >
-              <ArrowLeftIcon className="w-6 h-6 text-gray-600" />
-            </button>
-          </div>
-        </div>
         <div className="p-4 space-y-4">
           {messages.map((message, i) => (
             <MessageBubble
@@ -60,6 +50,14 @@ export default function ChatWindow({
           setNewMessage={setNewMessage}
           ref={TextInputRef}
         />
+        <div className="sm:hidden">
+          <button
+            onClick={onMBBack}
+            className="absolute left-4 -top-14 flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 bg-white hover:bg-gray-100 hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          >
+            <ArrowLeftIcon className="w-6 h-6 text-gray-600" />
+          </button>
+        </div>
       </div>
     </div>
   );
