@@ -37,6 +37,12 @@ export default function MessageInput({
           onKeyDown={onKeyDown}
           placeholder="Type a message..."
           className="flex-1 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          enterKeyHint="send"
+          autoComplete="off"
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck="false"
+          aria-label="Message input"
         />
         <button
           onClick={handleSend}
