@@ -1,11 +1,22 @@
 "use client";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon, EnterFullScreenIcon } from "@radix-ui/react-icons";
+import { useEffect, useState } from "react";
 
 export default function Header({
   setIsOpen,
 }: {
   setIsOpen: (isOpen: boolean) => void;
 }) {
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  useEffect(() => {
+    if (isFullScreen) {
+      document.documentElement.requestFullscreen();
+      return;
+    }
+    document.exitFullscreen();
+  }, [isFullScreen]);
+
   return (
     <div className="h-16 bg-white border-b border-gray-200 flex items-center px-4">
       <button
@@ -14,7 +25,14 @@ export default function Header({
       >
         <HamburgerMenuIcon className="w-6 h-6" />
       </button>
-      <h1 className="text-lg font-semibold">ALChat PWA</h1>
+      <h1 className="text-lg font-semibol flex-1">ALChat PWA</h1>
+
+      <button
+        className="cursor-pointer"
+        onClick={() => setIsFullScreen((prev) => !prev)}
+      >
+        <EnterFullScreenIcon className="w-6 h-6" />
+      </button>
     </div>
   );
 }
