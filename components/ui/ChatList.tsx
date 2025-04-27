@@ -10,7 +10,7 @@ export default function ChatList({
   setActiveChat: (activeChat: number) => void;
 }) {
   return (
-    <div className="w-80 bg-gray-50 border-r border-gray-200 h-[100dvh] sm:h-full overflow-y-auto">
+    <div className="w-screen sm:w-80 bg-gray-50 border-r border-gray-200 h-[100dvh] sm:h-full overflow-y-auto">
       {chats.map((chat, i) => (
         <div
           key={chat.id}
