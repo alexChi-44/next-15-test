@@ -10,13 +10,16 @@ export default function Header({
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
+    // const navBar = document.getElementById("top-nav");
     if (isFullScreen) {
       document.documentElement.requestFullscreen({
-        navigationUI: "show",
+        navigationUI: "hide",
       });
+      // navBar.style.display = "none"; // Hide navigation
       return;
     }
     document.exitFullscreen();
+    // navBar.style.display = "block"; // Show navigation
   }, [isFullScreen]);
 
   return (
