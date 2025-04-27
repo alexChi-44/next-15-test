@@ -10,16 +10,21 @@ export default function Header({
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
-    // const navBar = document.getElementById("top-nav");
+    // Get the navigation bar element, explicitly typed as HTMLElement or null.
+    const navBar = document.getElementById("top-nav") as HTMLElement | null;
+
     if (isFullScreen) {
-      document.documentElement.requestFullscreen({
-        navigationUI: "hide",
-      });
-      // navBar.style.display = "none"; // Hide navigation
+      // If navBar exists, hide it.
+      if (navBar) {
+        navBar.style.display = "none";
+      }
       return;
     }
-    document.exitFullscreen();
-    // navBar.style.display = "block"; // Show navigation
+
+    // If navBar exists, show it.
+    if (navBar) {
+      navBar.style.display = "block";
+    }
   }, [isFullScreen]);
 
   return (
