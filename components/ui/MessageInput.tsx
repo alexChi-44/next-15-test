@@ -36,6 +36,9 @@ export default function MessageInput({
           }
           onKeyDown={onKeyDown}
           placeholder="Type a message..."
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck="false"
           className="flex-1 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
