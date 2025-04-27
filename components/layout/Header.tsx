@@ -11,7 +11,9 @@ export default function Header({
 
   useEffect(() => {
     if (isFullScreen) {
-      document.documentElement.requestFullscreen();
+      document.documentElement.requestFullscreen({
+        navigationUI: "show",
+      });
       return;
     }
     document.exitFullscreen();
