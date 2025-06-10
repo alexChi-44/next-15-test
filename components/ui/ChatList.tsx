@@ -1,4 +1,6 @@
+import { getTestApi } from "@/lib/api/message-test";
 import { Chat } from "@/lib/types";
+import { useState } from "react";
 
 export default function ChatList({
   chats = [],
@@ -11,6 +13,8 @@ export default function ChatList({
   setActiveChat: (activeChat: number) => void;
   onAddNewChat: () => void;
 }) {
+  // const [test, setTest] = useState()
+  // const testResult = await getTestApi()
   return (
     <div className="w-80 bg-gray-50 border-r border-gray-200 h-[100dvh] sm:h-full flex flex-col">
       <div className="flex-1 overflow-y-auto">

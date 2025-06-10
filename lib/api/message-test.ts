@@ -55,9 +55,10 @@ export const getPlayLive = async (): Promise<ICheckoutResponse> => {
   }
 };
 
-export const getFirstGameApi = async (): Promise<IGame | null> => {
+export const getTestApi = async (): Promise<IGame | null> => {
   try {
-    const response = await GET(ApiEndpoints.ADDRESS);
+    const response = await GET(ApiEndpoints.APPLY_COUPON);
+    console.log('response', response)
     if (response.ok) {
       return getFirstGame(response.data?.games);
     } else {

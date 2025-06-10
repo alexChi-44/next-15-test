@@ -1,18 +1,8 @@
-import { cookies } from "next/headers";
-
-export const getAuthTokenAction = async () => {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(process.env.AUTH_TOKEN_COOKIE || "auth_token");
-  if (token) {
-    return `${token.name}=${token.value}`;
-  } else {
-    return false;
-  }
-};
+import { getAuthTokenAction } from "./auth";
 
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.lcb.loc";
+  process.env.NEXT_PUBLIC_API_URL || "https://6847f4d3ec44b9f3493efab2.mockapi.io/api/";
 const API_BASE_VERSION = process.env.NEXT_PUBLIC_API_VERSION || "/api/v1/rest";
 
 type RequestOptions = RequestInit & {
@@ -51,7 +41,8 @@ async function getAuthToken() {
 
 async function request(endpoint: string, options: RequestOptions = {}) {
   const { headers, isFormData, ...restOptions } = options;
-  const authCookie = await getAuthToken();
+  // const authCookie = await getAuthToken();
+  const authCookie = ""
   const requestHeaders = new Headers({
     ...headers,
     Accept: "application/json",
@@ -65,7 +56,7 @@ async function request(endpoint: string, options: RequestOptions = {}) {
     requestHeaders.append("Cookie", authCookie);
   }
 
-  const request = new Request(`${API_BASE_URL}${API_BASE_VERSION}${endpoint}`, {
+  const request = new Request(`${API_BASE_URL}${endpoint}`, {
     ...restOptions,
     headers: requestHeaders,
     credentials: "include",
