@@ -146,6 +146,7 @@ export default function Home() {
           chats={chats}
           activeChat={activeChat}
           setActiveChat={onSetActiveChat}
+          onAddNewChat={() => {}}
         />
       </div>
 

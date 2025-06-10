@@ -1,20 +1,19 @@
-import { getAuthTokenAction } from "./auth";
-
+// import { getAuthTokenAction } from "./auth";
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://6847f4d3ec44b9f3493efab2.mockapi.io/api/";
-const API_BASE_VERSION = process.env.NEXT_PUBLIC_API_VERSION || "/api/v1/rest";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://6847f4d3ec44b9f3493efab2.mockapi.io/api";
 
 type RequestOptions = RequestInit & {
   isFormData?: boolean;
 };
 
-interface ApiResponse {
-  data?: unknown;
-  messages?: string[];
-  errors?: string[];
-  status?: number;
-}
+// interface ApiResponse {
+//   data?: unknown;
+//   messages?: string[];
+//   errors?: string[];
+//   status?: number;
+// }
 
 export interface IResponse<T> {
   pagination?: {
@@ -30,19 +29,18 @@ export interface IResponse<T> {
   status: number;
 }
 
-
-async function getAuthToken() {
-  if (typeof window !== "undefined") {
-    return false;
-  } else {
-    return await getAuthTokenAction();
-  }
-}
+// async function getAuthToken() {
+//   if (typeof window !== "undefined") {
+//     return false;
+//   } else {
+//     return await getAuthTokenAction();
+//   }
+// }
 
 async function request(endpoint: string, options: RequestOptions = {}) {
   const { headers, isFormData, ...restOptions } = options;
   // const authCookie = await getAuthToken();
-  const authCookie = ""
+  const authCookie = "";
   const requestHeaders = new Headers({
     ...headers,
     Accept: "application/json",
@@ -59,7 +57,7 @@ async function request(endpoint: string, options: RequestOptions = {}) {
   const request = new Request(`${API_BASE_URL}${endpoint}`, {
     ...restOptions,
     headers: requestHeaders,
-    credentials: "include",
+    // credentials: "include",
   });
 
   const response = await fetch(request);
@@ -74,7 +72,7 @@ export const GET = (endpoint: string, options?: RequestOptions) =>
 export const POST = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,
@@ -85,7 +83,7 @@ export const POST = (
 export const PUT = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,
@@ -96,7 +94,7 @@ export const PUT = (
 export const PATCH = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,
@@ -107,7 +105,7 @@ export const PATCH = (
 export const DELETE = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,

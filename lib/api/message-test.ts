@@ -2,7 +2,6 @@ import { toast } from "react-toastify";
 import { GET } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
 
-
 export interface IGameItem {
   id: number;
   text: string;
@@ -21,13 +20,12 @@ interface IGame {
   zoom_link: string;
 }
 
-
 function getFirstGame(games: IGame[]) {
   return games
     .sort(
       (a: IGame, b: IGame) =>
         new Date(`${a.start_at}`).getTime() -
-        new Date(`${b.start_at}`).getTime(),
+        new Date(`${b.start_at}`).getTime()
     )
     .slice(0, 1)?.[0];
 }
@@ -58,7 +56,6 @@ export const getPlayLive = async (): Promise<ICheckoutResponse> => {
 export const getTestApi = async (): Promise<IGame | null> => {
   try {
     const response = await GET(ApiEndpoints.APPLY_COUPON);
-    console.log('response', response)
     if (response.ok) {
       return getFirstGame(response.data?.games);
     } else {

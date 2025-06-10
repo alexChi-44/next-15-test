@@ -10,7 +10,6 @@ export const getAuthTokenAction = async () => {
   }
 };
 
-
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://api.lcb.loc";
 const API_BASE_VERSION = process.env.NEXT_PUBLIC_API_VERSION || "/api/v1/rest";
@@ -19,12 +18,12 @@ type RequestOptions = RequestInit & {
   isFormData?: boolean;
 };
 
-interface ApiResponse {
-  data?: unknown;
-  messages?: string[];
-  errors?: string[];
-  status?: number;
-}
+// interface ApiResponse {
+//   data?: unknown;
+//   messages?: string[];
+//   errors?: string[];
+//   status?: number;
+// }
 
 export interface IResponse<T> {
   pagination?: {
@@ -82,7 +81,7 @@ export const GET = (endpoint: string, options?: RequestOptions) =>
 export const POST = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,
@@ -93,7 +92,7 @@ export const POST = (
 export const PUT = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,
@@ -104,7 +103,7 @@ export const PUT = (
 export const PATCH = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,
@@ -115,7 +114,7 @@ export const PATCH = (
 export const DELETE = (
   endpoint: string,
   body?: unknown,
-  options?: RequestOptions,
+  options?: RequestOptions
 ) =>
   request(endpoint, {
     ...options,
