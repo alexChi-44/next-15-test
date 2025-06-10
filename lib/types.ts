@@ -12,17 +12,3 @@ export interface Message {
   isUser: boolean;
   time: string;
 }
-
-export interface IResponse<T> {
-  pagination?: {
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-  };
-  data: T;
-  errors: string[]; // ✅ much simpler
-  messages: string[];
-  ok: boolean;
-  status: number;
-}

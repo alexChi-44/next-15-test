@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { IResponse } from "./types";
 
 export const getAuthTokenAction = async () => {
   const cookieStore = await cookies();
@@ -26,6 +25,21 @@ interface ApiResponse {
   errors?: string[];
   status?: number;
 }
+
+export interface IResponse<T> {
+  pagination?: {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+  };
+  data: T;
+  errors: string[]; // ✅ much simpler
+  messages: string[];
+  ok: boolean;
+  status: number;
+}
+
 
 async function getAuthToken() {
   if (typeof window !== "undefined") {
