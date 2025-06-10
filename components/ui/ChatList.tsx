@@ -15,7 +15,8 @@ export default function ChatList({
 }) {
   useEffect(() => {
     async function getTestRes() {
-      await getTestApi();
+      const test = await getTestApi();
+      console.log(test, "test");
     }
 
     getTestRes();

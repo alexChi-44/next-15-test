@@ -54,6 +54,13 @@ async function request(endpoint: string, options: RequestOptions = {}) {
     requestHeaders.append("Cookie", authCookie);
   }
 
+  if ("TEST TEST TEST !!!!") {
+    requestHeaders.append(
+      "Authorization",
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0OTU3MDY0NSwiZXhwIjoxNzQ5NTc0MjQ1fQ.-zC3tW3iN3p6VjnYgPyzMhA1bw6aX3cZBb5yB6gPUMw"
+    );
+  }
+
   const request = new Request(`${API_BASE_URL}${endpoint}`, {
     ...restOptions,
     headers: requestHeaders,
