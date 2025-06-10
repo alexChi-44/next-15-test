@@ -1,20 +1,25 @@
-import type { MetadataRoute } from 'next'
- 
+import type { MetadataRoute } from "next";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Next.js App',
-    short_name: 'Next.js App',
-    description: 'Next.js App',
-    start_url: '/',
-    display: 'standalone',
-    background_color: '#fff',
-    theme_color: '#fff',
+    name: "ST-v0.1",
+    short_name: "SimpleT",
+    description: "A Progressive Web App built with Next.js",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#ffffff",
+    theme_color: "#000000",
     icons: [
       {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
+        src: "/dogs.svg",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        src: "/vercel.svg",
+        sizes: "512x512",
+        type: "image/png",
       },
     ],
-  }
+  };
 }
