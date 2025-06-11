@@ -7,16 +7,9 @@ import { useUserStore } from "@/lib/store/user";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { loginSchema, registerSchema } from "@/lib/models";
 
-// Validation schemas
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
 
-const registerSchema = loginSchema.extend({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-});
 
 // Types
 interface UserData {
