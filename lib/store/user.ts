@@ -1,43 +1,19 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-// Define the User interface
 interface User {
-  id: number | null;
-  name: string;
-  email: string;
+  id: number;
+  username: string;
+  login: string;
   isAuthenticated: boolean;
-  avatarUrl: string
+  token: string;
 }
 
-// Define the Store interface
 interface UserStore {
-  user: User;
-  setUser: (user: Partial<User>) => void;
-  setAuth: (isAuthenticated: boolean) => void;
-  logout: () => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
 }
 
-// Create the Zustand store
 export const useUserStore = create<UserStore>((set) => ({
-  user: {
-    id: null,
-    name: '',
-    email: '',
-    isAuthenticated: false,
-    avatarUrl: ''
-  },
-  setUser: (user) =>
-    set((state) => ({
-      user: { ...state.user, ...user },
-    })),
-
-  setAuth: (isAuthenticated) =>
-    set((state) => ({
-      user: { ...state.user, isAuthenticated },
-    })),
-    
-  logout: () =>
-    set({
-      user: { id: null, avatarUrl: '', name: '', email: '', isAuthenticated: false },
-    }),
+  user: null,
+  setUser: (user) => set({ user }),
 }));

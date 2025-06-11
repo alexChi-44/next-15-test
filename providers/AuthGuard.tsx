@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from "@/lib/store/user";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  const {
-    user: { isAuthenticated },
-    setAuth,
-  } = useUserStore();
+  // const {
+  //   user: { isAuthenticated },
+  //   setAuth,
+  // } = useUserStore();
+  const isAuthenticated = false;
+  const setAuth = () => {};
   const router = useRouter();
   useEffect(() => {
     if (!isAuthenticated) {

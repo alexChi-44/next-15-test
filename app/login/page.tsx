@@ -1,80 +1,305 @@
 "use client";
-import { useState } from "react";
-import { useUserStore } from "@/lib/store/user";
-import { useRouter } from "next/navigation";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUserStore } from "@/lib/store/user";
+// import axios, { AxiosError } from "axios";
+import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Validation schemas
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const registerSchema = loginSchema.extend({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+});
+
+// Types
+interface UserData {
+  id: number;
+  username: string;
+  login: string;
+  isAuthenticated: boolean;
+  token: string;
+}
+
+interface FormErrors {
+  email?: string;
+  password?: string;
+  username?: string;
+  server?: string;
+}
+
+// Constants
+const API_BASE_URL = "http://localhost:5555/api/auth";
+const ANIMATION_VARIANTS = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.2 } },
+};
+
+export default function AuthPage() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    username: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const { setUser } = useUserStore();
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Clear session storage on mount
+  useEffect(() => {
+    sessionStorage.removeItem("ST_app_auth");
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined, server: undefined }));
+  };
+
+  const validateForm = () => {
+    try {
+      const schema = isLogin ? loginSchema : registerSchema;
+      schema.parse(formData);
+      return true;
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        const fieldErrors: FormErrors = {};
+        e.errors.forEach((err) => {
+          const path = err.path[0] as keyof FormErrors;
+          fieldErrors[path] = err.message;
+        });
+        setErrors(fieldErrors);
+      }
+      return false;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+    setIsLoading(true);
 
-    const userData = {
-      id: 1,
-      name: "John Doe",
-      email: email,
-      password: password,
-      isAuthenticated: true,
-      avatarUrl: "/default-avatar.png",
-    };
+    if (!validateForm()) {
+      setIsLoading(false);
+      return;
+    }
 
-    setUser(userData);
-    sessionStorage.setItem("ST_app_auth", JSON.stringify(userData));
-    router.push("/");
+    try {
+      const endpoint = isLogin
+        ? `${API_BASE_URL}/login`
+        : `${API_BASE_URL}/register`;
+      const payload = isLogin
+        ? { login: formData.email, password: formData.password }
+        : {
+            username: formData.username,
+            login: formData.email,
+            password: formData.password,
+          };
+
+      // const response = await axios.post(endpoint, payload);
+      const response = {};
+      const { user, token } = response?.data?.data;
+
+      const userData: UserData = {
+        id: "user.id",
+        username: "user.username",
+        login: "user.login",
+        isAuthenticated: true,
+        token,
+      };
+
+      setUser(userData);
+      sessionStorage.setItem("ST_app_auth", JSON.stringify(userData));
+      setIsSuccess(true);
+      setTimeout(() => router.push("/"), 1000);
+    } catch (error) {
+      let errorMessage = "An unexpected error occurred";
+      // if (error instanceof AxiosError && error.response) {
+      //   errorMessage = error.response.data.message || errorMessage;
+      // }
+      setErrors({ server: errorMessage });
+      setIsLoading(false);
+    }
+  };
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setFormData({ email: "", password: "", username: "" });
+    setErrors({});
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="w-screen sm:w-100 bg-white p-8 rounded-lg shadow-md"
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#E6F0FA] to-[#B3D4FC] p-4">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={ANIMATION_VARIANTS}
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        <div className="space-y-4">
+        <h2 className="text-2xl font-bold text-center text-[#1A73E8] mb-6">
+          {isLogin ? "Welcome Back" : "Join Us"}
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <AnimatePresence mode="wait">
+            {!isLogin && (
+              <motion.div
+                key="username"
+                variants={ANIMATION_VARIANTS}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Username
+                </label>
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className={cn(
+                    "mt-1 block w-full rounded-lg border px-4 py-3 text-gray-900 focus:ring-2 focus:ring-[#1A73E8] transition-all",
+                    errors.username ? "border-red-300" : "border-gray-300"
+                  )}
+                  placeholder="Enter your username"
+                  aria-invalid={!!errors.username}
+                  aria-describedby={
+                    errors.username ? "username-error" : undefined
+                  }
+                  required={!isLogin}
+                />
+                {errors.username && (
+                  <p id="username-error" className="mt-1 text-sm text-red-500">
+                    {errors.username}
+                  </p>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
-              //   type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className={cn(
+                "mt-1 block w-full rounded-lg border px-4 py-3 text-gray-900 focus:ring-2 focus:ring-[#1A73E8] transition-all",
+                errors.email ? "border-red-300" : "border-gray-300"
+              )}
+              placeholder="Enter your email"
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "email-error" : undefined}
               required
             />
+            {errors.email && (
+              <p id="email-error" className="mt-1 text-sm text-red-500">
+                {errors.email}
+              </p>
+            )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
+              id="password"
+              name="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              value={formData.password}
+              onChange={handleInputChange}
+              className={cn(
+                "mt-1 block w-full rounded-lg border px-4 py-3 text-gray-900 focus:ring-2 focus:ring-[#1A73E8] transition-all",
+                errors.password ? "border-red-300" : "border-gray-300"
+              )}
+              placeholder="Enter your password"
+              aria-invalid={!!errors.password}
+              aria-describedby={errors.password ? "password-error" : undefined}
               required
             />
+            {errors.password && (
+              <p id="password-error" className="mt-1 text-sm text-red-500">
+                {errors.password}
+              </p>
+            )}
           </div>
+          {errors.server && (
+            <p className="text-sm text-red-500 text-center">{errors.server}</p>
+          )}
+          {isSuccess && (
+            <p className="text-sm text-green-500 text-center">
+              {isLogin ? "Logged in!" : "Registered!"} Redirecting...
+            </p>
+          )}
           <button
             type="submit"
-            className="cursor-pointer w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+            disabled={isLoading}
+            className={cn(
+              "w-full bg-[#1A73E8] text-white py-3 px-4 rounded-lg hover:bg-[#1557B0] transition-all flex items-center justify-center",
+              isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            )}
+            aria-label={isLogin ? "Log in" : "Sign up"}
           >
-            Login
+            {isLoading ? (
+              <svg
+                className="animate-spin h-5 w-5 mr-2"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                />
+              </svg>
+            ) : null}
+            {isLoading ? "Processing..." : isLogin ? "Log In" : "Sign Up"}
           </button>
           <button
             type="button"
-            onClick={() => {
-              sessionStorage.removeItem("ST_app_auth");
-            }}
-            className="cursor-pointer w-full text-gray-500 underline text-sm hover:text-gray-700"
+            onClick={toggleMode}
+            className="w-full text-[#1A73E8] text-sm hover:underline focus:outline-none focus:ring-2 focus:ring-[#1A73E8] rounded"
+            aria-label={`Switch to ${isLogin ? "sign up" : "log in"}`}
           >
-            Clear Data
+            {isLogin
+              ? "Don't have an account? Sign Up"
+              : "Already have an account? Log In"}
           </button>
-        </div>
-      </form>
+        </form>
+      </motion.div>
     </div>
   );
 }
