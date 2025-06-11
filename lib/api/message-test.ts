@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 import { GET } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
-import { console } from "node:inspector";
 
 export interface IGameItem {
   id: number;

@@ -1,14 +1,58 @@
-"use server";
+import { toast } from "react-toastify";
+import { GET, POST } from "./client";
+import { ApiEndpoints } from "./api-endpoints";
 
-import { cookies } from "next/headers";
+export interface IGameItem {
+  id: number;
+  text: string;
+  link: string;
+}
 
-export const getAuthTokenAction = async () => {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(process.env.AUTH_TOKEN_COOKIE || "auth_token");
-  console.log(token, "token !");
-  if (token) {
-    return `${token.name}=${token.value}`;
-  } else {
-    return false;
+export interface ICheckoutResponse {
+  ok: boolean;
+  data: IGameItem[];
+}
+
+interface IGame {
+  game_id: number;
+  start_at: string;
+  title: string;
+  zoom_link: string;
+}
+
+export const getPlayLive = async (): Promise<ICheckoutResponse> => {
+  try {
+    const response = await GET(ApiEndpoints.ACCOUNT_DETAILS);
+    if (response.ok) {
+      return {
+        ok: true,
+        data: response.data?.games,
+      };
+    } else {
+      return {
+        ok: false,
+        data: [],
+      };
+    }
+  } catch (error) {
+    toast.error(`Error fetching checkout order: ${error}`);
+    return {
+      ok: false,
+      data: [],
+    };
+  }
+};
+
+export const registerUserAPI = async (payload): Promise<IGame> => {
+  try {
+    const response = await POST(ApiEndpoints.AUTH, payload);
+    if (response.ok) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    toast.error(`Error fetching checkout order: ${error}`);
+    return null;
   }
 };

@@ -64,7 +64,7 @@ async function request(endpoint: string, options: RequestOptions = {}) {
   const request = new Request(`${API_BASE_URL}${endpoint}`, {
     ...restOptions,
     headers: requestHeaders,
-    // credentials: "include",
+    credentials: "include",
   });
 
   const response = await fetch(request);

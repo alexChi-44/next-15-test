@@ -8,8 +8,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { loginSchema, registerSchema } from "@/lib/models";
-
-
+import { registerUserAPI } from "@/lib/api/auth";
 
 // Types
 interface UserData {
@@ -28,7 +27,6 @@ interface FormErrors {
 }
 
 // Constants
-const API_BASE_URL = "http://localhost:5555/api/auth";
 const ANIMATION_VARIANTS = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
@@ -58,7 +56,7 @@ export default function AuthPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined, server: undefined }));
   };
-
+  console.log(errors, "errors !!");
   const validateForm = () => {
     try {
       const schema = isLogin ? loginSchema : registerSchema;
@@ -88,21 +86,15 @@ export default function AuthPage() {
     }
 
     try {
-      const endpoint = isLogin
-        ? `${API_BASE_URL}/login`
-        : `${API_BASE_URL}/register`;
-      const payload = isLogin
-        ? { login: formData.email, password: formData.password }
-        : {
-            username: formData.username,
-            login: formData.email,
-            password: formData.password,
-          };
+      const payload = {
+        username: formData.username,
+        login: formData.email,
+        password: formData.password,
+      };
+      const response = await registerUserAPI(payload);
 
-      // const response = await axios.post(endpoint, payload);
-      const response = {};
       const { user, token } = response?.data?.data;
-
+      console.log(user, token, "user token");
       const userData: UserData = {
         id: "user.id",
         username: "user.username",

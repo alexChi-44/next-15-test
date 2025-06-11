@@ -69,7 +69,7 @@ export default function Home() {
     };
     setChats((prev) =>
       prev.map((chat) => {
-        if (chat.id === activeChat) {
+        if (chat?.id === activeChat) {
           if (id) {
             return {
               ...chat,
@@ -98,7 +98,7 @@ export default function Home() {
   const handleDeleteMessage = (message: Message) => {
     setChats((prev) =>
       prev.map((chat) => {
-        if (chat.id === activeChat) {
+        if (chat?.id === activeChat) {
           return {
             ...chat,
             messages: [...chat.messages].filter((el) => el.id !== message.id),
@@ -110,7 +110,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!user.id) {
+    if (!user?.id) {
       setUser({
         id: 1,
         avatarUrl: "",
@@ -122,10 +122,10 @@ export default function Home() {
   }, [setUser, user]);
 
   useEffect(() => {
-    if (!user.isAuthenticated) {
+    if (!user?.isAuthenticated) {
       router.push("/login");
     }
-  }, [router, user.isAuthenticated]);
+  }, [router, user?.isAuthenticated]);
 
   function onMbBack() {
     setMbIsSelected(true);
@@ -135,7 +135,7 @@ export default function Home() {
     setActiveChat(activeChat);
   }
 
-  if (!user.isAuthenticated) {
+  if (!user?.isAuthenticated) {
     return <ChatSkeleton />;
   }
 
