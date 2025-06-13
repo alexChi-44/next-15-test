@@ -2,12 +2,12 @@
 import { HamburgerMenuIcon, EnterFullScreenIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 
-export default function Header({
-  setIsOpen,
-}: {
-  setIsOpen: (isOpen: boolean) => void;
-}) {
+export default function Header() {
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  function setIsOpen(isOpen: boolean) {
+    console.log("set sidevar is open", isOpen);
+  }
 
   useEffect(() => {
     const navBar = document.getElementById("top-nav") as HTMLElement | null;
@@ -25,7 +25,7 @@ export default function Header({
   }, [isFullScreen]);
 
   return (
-    <div className="h-16 bg-white border-b border-gray-200 flex items-center px-4">
+    <div className="h-18 bg-white border-b border-gray-200 flex items-center px-4">
       <button
         className="sm:hidden mr-4 p-2 hover:bg-gray-100 rounded-md"
         onClick={() => setIsOpen(true)}

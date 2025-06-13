@@ -36,11 +36,6 @@ export default function AuthPage() {
   const { setUser } = useUserStore();
   const router = useRouter();
 
-  // Clear session storage on mount
-  useEffect(() => {
-    sessionStorage.removeItem("ST_app_auth");
-  }, []);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));

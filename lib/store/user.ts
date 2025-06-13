@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { userStorageHelper } from "../utils";
 
 interface User {
-  id: number;
+  id: number | null;
   username: string;
   email: string;
 }
@@ -10,10 +10,15 @@ interface User {
 interface UserStore {
   user: User | null;
   setUser: (user: User | null) => void;
+  logout: () => void;
 }
 
 export const useUserStore = create<UserStore>((set) => {
-  const defaultUser = userStorageHelper.getUser() || null;
+  const defaultUser = userStorageHelper.getUser() || {
+    id: null,
+    username: "",
+    email: "",
+  };
   console.log(defaultUser, "storaged user");
   return {
     user: defaultUser,
@@ -23,6 +28,16 @@ export const useUserStore = create<UserStore>((set) => {
       });
 
       return set({ user });
+    },
+    logout: () => {
+      userStorageHelper.removeUser();
+      return set({
+        user: {
+          id: null,
+          username: "",
+          email: "",
+        },
+      });
     },
   };
 });
