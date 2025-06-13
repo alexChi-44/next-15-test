@@ -11,7 +11,7 @@ import { useState } from "react";
 
 export default function Sidebar() {
   const { user, logout } = useUserStore();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   function onClose() {
     setIsOpen(false);
   }

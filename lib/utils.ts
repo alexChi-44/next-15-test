@@ -8,24 +8,22 @@ export function cn(...inputs: ClassValue[]) {
 export const userStorageHelper = {
   STORAGE_KEY: "telegramCloneUser",
 
-  setUser(userData) {
+  setUser(
+    userData: { id: number; username: string; email: string } | null
+  ): { id: number; username: string; email: string } | null {
     try {
-      if (!userData || typeof userData !== "object") {
-        throw new Error("Данные пользователя должны быть объектом");
-      }
-      const userToStore = {
-        ...userData,
-      };
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(userToStore));
-      return userToStore;
+      if (typeof window === "undefined" || !userData) return null;
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(userData));
+      return userData;
     } catch (error) {
       console.error("Ошибка при сохранении пользователя:", error);
       return null;
     }
   },
 
-  getUser() {
+  getUser(): { id: number; username: string; email: string } | null {
     try {
+      if (typeof window === "undefined") return null;
       const userData = localStorage.getItem(this.STORAGE_KEY);
       return userData ? JSON.parse(userData) : null;
     } catch (error) {
@@ -34,16 +32,15 @@ export const userStorageHelper = {
     }
   },
 
-  updateUser(updates) {
+  updateUser(
+    updates: Partial<{ id: number; username: string; email: string }>
+  ): { id: number; username: string; email: string } | null {
     try {
+      if (typeof window === "undefined") return null;
       const currentUser = this.getUser();
-      if (!currentUser) {
-        throw new Error("Пользователь не найден");
-      }
-      const updatedUser = {
-        ...currentUser,
-        ...updates,
-      };
+      if (!currentUser) throw new Error("Пользователь не найден");
+
+      const updatedUser = { ...currentUser, ...updates };
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedUser));
       return updatedUser;
     } catch (error) {
@@ -52,8 +49,9 @@ export const userStorageHelper = {
     }
   },
 
-  removeUser() {
+  removeUser(): boolean {
     try {
+      if (typeof window === "undefined") return false;
       localStorage.removeItem(this.STORAGE_KEY);
       return true;
     } catch (error) {
@@ -62,7 +60,7 @@ export const userStorageHelper = {
     }
   },
 
-  hasUser() {
-    return !!this.getUser();
+  hasUser(): boolean {
+    return typeof window !== "undefined" ? !!this.getUser() : false;
   },
 };

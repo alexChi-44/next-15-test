@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useUserStore } from "@/lib/store/user";
-import { userStorageHelper } from "@/lib/utils";
+import { getUserAPI } from "@/lib/api/auth";
 
 export default function UserProvider({
   children,
@@ -13,16 +13,19 @@ export default function UserProvider({
   const { user, setUser } = useUserStore();
   const router = useRouter();
   const pathname = usePathname();
-
+  const [userLoaded, setUserLoaded] = useState(false);
   useEffect(() => {
-    // if (!user && storagedUser) {
-    //   setUser(storagedUser);
-    // }
-    // if (user?.username === "name") {
-    //   console.log("temp temp need load user create route", user);
-    //   setUser(null);
-    // }
-  }, [user, router, pathname, setUser]);
+    async function getUser() {
+      const userData = await getUserAPI();
+      console.log(userData, "userData");
+      setUser(userData);
+      setUserLoaded(true);
+    }
+    if (!userLoaded) {
+      console.log("!!!!!!!!!!!!!", userLoaded);
+      getUser();
+    }
+  }, [setUser, userLoaded]);
 
   return <>{children}</>;
 }

@@ -1,6 +1,6 @@
 "use client";
 import { toast } from "react-toastify";
-import { POST } from "./client";
+import { GET, POST } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
 
 export interface UserData {
@@ -37,6 +37,20 @@ export const loginUserAPI = async (
     if (response.ok) {
       toast.success("user successfully logged in");
       return response.data.user;
+    }
+    toast.error(`Error: ${response.message}`);
+    return null;
+  } catch (error) {
+    toast(`Error: ${error}`);
+    return null;
+  }
+};
+
+export const getUserAPI = async (): Promise<UserData | null> => {
+  try {
+    const response = await GET(ApiEndpoints.USER);
+    if (response.ok) {
+      return response.data;
     }
     toast.error(`Error: ${response.message}`);
     return null;

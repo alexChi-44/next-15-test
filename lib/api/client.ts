@@ -1,5 +1,7 @@
 // import { getAuthTokenAction } from "./auth";
 
+import { getAuthTokenAction } from "./utils";
+
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://6847f4d3ec44b9f3493efab2.mockapi.io/api";
@@ -29,18 +31,18 @@ export interface IResponse<T> {
   status: number;
 }
 
-// async function getAuthToken() {
-//   if (typeof window !== "undefined") {
-//     return false;
-//   } else {
-//     return await getAuthTokenAction();
-//   }
-// }
+async function getAuthToken() {
+  if (typeof window === "undefined") {
+    return false;
+  } else {
+    return await getAuthTokenAction();
+  }
+}
 
 async function request(endpoint: string, options: RequestOptions = {}) {
   const { headers, isFormData, ...restOptions } = options;
-  // const authCookie = await getAuthToken();
-  const authCookie = "";
+  const authCookie = await getAuthToken();
+
   const requestHeaders = new Headers({
     ...headers,
     Accept: "application/json",
@@ -54,11 +56,8 @@ async function request(endpoint: string, options: RequestOptions = {}) {
     requestHeaders.append("Cookie", authCookie);
   }
 
-  if ("TEST TEST TEST !!!!") {
-    requestHeaders.append(
-      "Authorization",
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0OTU3MDY0NSwiZXhwIjoxNzQ5NTc0MjQ1fQ.-zC3tW3iN3p6VjnYgPyzMhA1bw6aX3cZBb5yB6gPUMw"
-    );
+  if (authCookie) {
+    requestHeaders.append("Authorization", authCookie);
   }
 
   const request = new Request(`${API_BASE_URL}${endpoint}`, {
