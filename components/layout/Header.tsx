@@ -10,18 +10,15 @@ export default function Header({
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
-    // Get the navigation bar element, explicitly typed as HTMLElement or null.
     const navBar = document.getElementById("top-nav") as HTMLElement | null;
 
     if (isFullScreen) {
-      // If navBar exists, hide it.
       if (navBar) {
         navBar.style.display = "none";
       }
       return;
     }
 
-    // If navBar exists, show it.
     if (navBar) {
       navBar.style.display = "block";
     }

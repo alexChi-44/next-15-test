@@ -3,21 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/lib/store/user";
-// import axios, { AxiosError } from "axios";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { loginSchema, registerSchema } from "@/lib/models";
-import { registerUserAPI } from "@/lib/api/auth";
-
-// Types
-interface UserData {
-  id: number;
-  username: string;
-  login: string;
-  isAuthenticated: boolean;
-  token: string;
-}
+import { loginUserAPI, registerUserAPI, UserData } from "@/lib/api/auth";
 
 interface FormErrors {
   email?: string;
@@ -56,7 +46,7 @@ export default function AuthPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined, server: undefined }));
   };
-  console.log(errors, "errors !!");
+
   const validateForm = () => {
     try {
       const schema = isLogin ? loginSchema : registerSchema;
@@ -88,25 +78,29 @@ export default function AuthPage() {
     try {
       const payload = {
         username: formData.username,
-        login: formData.email,
+        email: formData.email,
         password: formData.password,
       };
-      const response = await registerUserAPI(payload);
+      const user = isLogin
+        ? await loginUserAPI(payload)
+        : await registerUserAPI(payload);
 
-      const { user, token } = response?.data?.data;
-      console.log(user, token, "user token");
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      console.log(user, "user token");
+
       const userData: UserData = {
-        id: "user.id",
-        username: "user.username",
-        login: "user.login",
-        isAuthenticated: true,
-        token,
+        id: user?.id,
+        username: user?.username,
+        email: user.email,
       };
 
       setUser(userData);
-      sessionStorage.setItem("ST_app_auth", JSON.stringify(userData));
       setIsSuccess(true);
-      setTimeout(() => router.push("/"), 1000);
+      // setTimeout(() => router.push("/"), 1000);
     } catch (error) {
       let errorMessage = "An unexpected error occurred";
       // if (error instanceof AxiosError && error.response) {

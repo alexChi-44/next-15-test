@@ -1,32 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useUserStore } from "@/lib/store/user";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  // const {
-  //   user: { isAuthenticated },
-  //   setAuth,
-  // } = useUserStore();
-  const isAuthenticated = false;
-  const setAuth = () => {};
+  const { user } = useUserStore();
   const router = useRouter();
-  useEffect(() => {
-    if (!isAuthenticated) {
-      const item = sessionStorage.getItem("ST_app_auth");
-      const data = item ? JSON.parse(item) : null;
-      if (data) {
-        setAuth(true);
-        router.replace("/");
-      }
-      // Redirect to login if not authenticated
-    }
-  }, [isAuthenticated, router, setAuth]);
+  const pathname = usePathname();
 
-  //   if (!isAuth) {
-  //     return null; // Or a loading spinner
-  //   }
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    if (user && pathname === "/login") {
+      router.replace("/");
+      return;
+    }
+  }, [user, router, pathname]);
 
   return <>{children}</>;
 }

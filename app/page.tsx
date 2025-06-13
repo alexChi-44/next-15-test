@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import ChatList from "@/components/ui/ChatList";
 import ChatWindow from "@/components/ui/ChatWindow";
 import { Message } from "@/lib/types";
@@ -35,7 +35,7 @@ export default function Home() {
   const { user, setUser } = useUserStore(); //logout
   // const [authors, setAuthors] = useState(authrs);
   const [mbIsSelected, setMbIsSelected] = useState(false);
-
+  console.log(user, "user !!");
   const [chats, setChats] = useState([
     {
       id: 0,
@@ -109,23 +109,17 @@ export default function Home() {
     );
   };
 
-  useEffect(() => {
-    if (!user?.id) {
-      setUser({
-        id: 1,
-        avatarUrl: "",
-        email: "",
-        isAuthenticated: true,
-        name: "Alex Chi",
-      });
-    }
-  }, [setUser, user]);
-
-  useEffect(() => {
-    if (!user?.isAuthenticated) {
-      router.push("/login");
-    }
-  }, [router, user?.isAuthenticated]);
+  // useEffect(() => {
+  //   if (!user?.id) {
+  //     setUser({
+  //       id: 1,
+  //       avatarUrl: "",
+  //       email: "",
+  //       isAuthenticated: true,
+  //       name: "Alex Chi",
+  //     });
+  //   }
+  // }, [setUser, user]);
 
   function onMbBack() {
     setMbIsSelected(true);
@@ -135,9 +129,9 @@ export default function Home() {
     setActiveChat(activeChat);
   }
 
-  if (!user?.isAuthenticated) {
-    return <ChatSkeleton />;
-  }
+  // if (!user?.isAuthenticated) {
+  //   return <ChatSkeleton />;
+  // }
 
   return (
     <div className="flex h-full">

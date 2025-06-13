@@ -1,58 +1,47 @@
+"use client";
 import { toast } from "react-toastify";
-import { GET, POST } from "./client";
+import { POST } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
 
-export interface IGameItem {
-  id: number;
-  text: string;
-  link: string;
+export interface UserData {
+  id?: number;
+  username: string;
+  email: string;
+  isAuthenticated?: boolean;
 }
 
-export interface ICheckoutResponse {
-  ok: boolean;
-  data: IGameItem[];
-}
-
-interface IGame {
-  game_id: number;
-  start_at: string;
-  title: string;
-  zoom_link: string;
-}
-
-export const getPlayLive = async (): Promise<ICheckoutResponse> => {
+export const registerUserAPI = async (
+  payload: UserData
+): Promise<UserData | null> => {
   try {
-    const response = await GET(ApiEndpoints.ACCOUNT_DETAILS);
+    const response = await POST(ApiEndpoints.REGISTER, payload);
+
     if (response.ok) {
-      return {
-        ok: true,
-        data: response.data?.games,
-      };
-    } else {
-      return {
-        ok: false,
-        data: [],
-      };
+      toast.success(`User created !`);
+      return response.data.user;
     }
+    toast.error(`Error: ${response.message}`);
+    return null;
   } catch (error) {
-    toast.error(`Error fetching checkout order: ${error}`);
-    return {
-      ok: false,
-      data: [],
-    };
+    toast(`Error: ${error}`);
+    return null;
   }
 };
 
-export const registerUserAPI = async (payload): Promise<IGame> => {
+export const loginUserAPI = async (
+  payload: UserData
+): Promise<UserData | null> => {
   try {
-    const response = await POST(ApiEndpoints.AUTH, payload);
+    const response = await POST(ApiEndpoints.LOGIN_USER, payload);
+
     if (response.ok) {
-      return response.data;
-    } else {
-      return null;
+      toast.success("user successfully logged in");
+      return response.data.user;
     }
+    toast.error(`Error: ${response.message}`);
+    return null;
   } catch (error) {
-    toast.error(`Error fetching checkout order: ${error}`);
+    toast(`Error: ${error}`);
     return null;
   }
 };

@@ -47,9 +47,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 className="rounded-full"
               />
               <div>
-                <h2 className="text-lg font-semibold">{"user.name"}</h2>
+                <h2 className="text-lg font-semibold">{user?.username}</h2>
                 <p className="text-sm text-gray-500">
-                  {user?.isAuthenticated ? "Online" : "Offline"}
+                  {user ? "Online" : "Offline"}
                 </p>
               </div>
             </div>
