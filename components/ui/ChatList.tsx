@@ -7,7 +7,7 @@ export default function ChatList({
   onAddNewChat,
 }: {
   chats: Chat[];
-  activeChat: number;
+  activeChat: number | null;
   setActiveChat: (activeChat: number) => void;
   onAddNewChat: () => void;
 }) {
@@ -36,10 +36,10 @@ export default function ChatList({
                     activeChat === chat.id ? "text-white" : "text-gray-500"
                   } truncate`}
                 >
-                  {chat.lastMessage}
+                  {"chat.lastMessage"}
                 </p>
               </div>
-              <span className="text-xs text-gray-400">{chat.time}</span>
+              <span className="text-xs text-gray-400">{chat.updated_at}</span>
             </div>
           </div>
         ))}

@@ -32,7 +32,7 @@ export default function MessageBubble({
 
   const handleDelete = () => {
     if (onDelete) {
-      onDelete(message);
+      onDelete(message.id);
     }
     setShowMenu(false);
   };

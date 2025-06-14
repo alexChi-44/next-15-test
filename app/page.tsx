@@ -2,53 +2,30 @@
 import { useEffect, useState } from "react";
 import ChatList from "@/components/ui/ChatList";
 import ChatWindow from "@/components/ui/ChatWindow";
-import { Message } from "@/lib/types";
+import { Chat, Message } from "@/lib/types";
 import { useUserStore } from "@/lib/store/user";
-import { ChatSkeleton } from "@/components/ui/skeletons/ChatSkeleton";
+// import { ChatSkeleton } from "@/components/ui/skeletons/ChatSkeleton";
 import { getChatsAPI } from "@/lib/api/chats";
-import { getMessagesAPI } from "@/lib/api/messages";
+import { getMessagesAPI, sendMessageAPI } from "@/lib/api/messages";
+import { deleteMessageAPI } from "../lib/api/messages";
 
 export default function Home() {
   const { user } = useUserStore();
   const [mbIsSelected, setMbIsSelected] = useState(false);
 
-  const [chats, setChats] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [activeChatId, setActiveChatId] = useState(null);
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [activeChatId, setActiveChatId] = useState<number | null>(null);
 
-  function setNewMessage(text: string, id: number | null) {
-    const now = new Date();
-    const time = `${now.getHours()}:${now
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
+  function setNewMessage(content: string) {
+    if (!activeChatId) return;
     const message = {
-      authorId: 1,
-      id: Math.random(),
-      text,
-      isUser: true,
-      time,
+      chatId: activeChatId,
+      content,
     };
-    setChats((prev) =>
-      prev.map((chat) => {
-        if (chat?.id === activeChatId) {
-          if (id) {
-            return {
-              ...chat,
-              messages: [...chat.messages].map((el) =>
-                el.id === id ? { ...el, text } : el
-              ),
-            };
-          } else {
-            return {
-              ...chat,
-              messages: [...chat.messages, message],
-            };
-          }
-        }
-        return chat;
-      })
-    );
+    sendMessageAPI(message).then((res) => {
+      if (res) setMessages((prev) => [...prev, res]);
+    });
   }
 
   // const handleEditMessage = (message: Message) => {
@@ -57,18 +34,16 @@ export default function Home() {
   //   console.warn("Edit message:", message.text);
   // };
 
-  const handleDeleteMessage = (message: Message) => {
-    setChats((prev) =>
-      prev.map((chat) => {
-        if (chat?.id === activeChatId) {
-          return {
-            ...chat,
-            messages: [...chat.messages].filter((el) => el.id !== message.id),
-          };
-        }
-        return chat;
-      })
-    );
+  const handleDeleteMessage = (id: number) => {
+    if (!activeChatId || !id) return;
+    const payload = { chatId: activeChatId, id };
+    deleteMessageAPI(payload).then((res) => {
+      if (res) {
+        setMessages((prev) =>
+          [...prev].filter((message) => +message?.id !== +res?.id)
+        );
+      }
+    });
   };
 
   useEffect(() => {
@@ -80,8 +55,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    async function getMessages(activeChatId) {
+    async function getMessages(activeChatId: number) {
       const messagesData = await getMessagesAPI(activeChatId);
+
       setMessages(messagesData || []);
     }
     if (activeChatId) {
@@ -114,7 +90,7 @@ export default function Home() {
 
       {!mbIsSelected ? (
         <ChatWindow
-          userId={user?.id}
+          userId={user?.id || null}
           messages={messages}
           setNewMessage={setNewMessage}
           // handleEditMessage={handleEditMessage}

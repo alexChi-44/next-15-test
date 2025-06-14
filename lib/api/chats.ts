@@ -2,15 +2,9 @@
 import { toast } from "react-toastify";
 import { GET } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
+import { Chat } from "../types";
 
-export interface UserData {
-  id?: number;
-  username: string;
-  email: string;
-  isAuthenticated?: boolean;
-}
-
-export const getChatsAPI = async (): Promise<UserData | null> => {
+export const getChatsAPI = async (): Promise<Chat[] | null> => {
   try {
     const response = await GET(ApiEndpoints.CHATS);
     if (response.ok) {

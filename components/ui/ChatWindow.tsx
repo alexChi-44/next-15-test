@@ -15,7 +15,7 @@ export default function ChatWindow({
   userId: number | null;
   messages: Message[];
   setNewMessage: (text: string, id: number | null) => void;
-  handleDeleteMessage: (message: Message) => void;
+  handleDeleteMessage: (id: number) => void;
   onMBBack: () => void;
 }) {
   const [message, setMessage] = useState<Message>({ id: null, text: "" });
