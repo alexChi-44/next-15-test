@@ -1,52 +1,20 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ChatList from "@/components/ui/ChatList";
 import ChatWindow from "@/components/ui/ChatWindow";
 import { Message } from "@/lib/types";
 import { useUserStore } from "@/lib/store/user";
-import { useRouter } from "next/navigation";
 import { ChatSkeleton } from "@/components/ui/skeletons/ChatSkeleton";
-
-const messg: Message[] = [
-  {
-    authorId: 1,
-    id: 0,
-    text: "Hey, how are you?",
-    isUser: false,
-    time: "10:30",
-  },
-  {
-    authorId: 2,
-    id: 1,
-    text: "I’m good, thanks!",
-    isUser: true,
-    time: "10:32",
-  },
-];
+import { getChatsAPI } from "@/lib/api/chats";
+import { getMessagesAPI } from "@/lib/api/messages";
 
 export default function Home() {
-  const router = useRouter();
-  const { user, setUser } = useUserStore(); //logout
-  // const [authors, setAuthors] = useState(authrs);
+  const { user } = useUserStore();
   const [mbIsSelected, setMbIsSelected] = useState(false);
-  console.log(user, "user !!");
-  const [chats, setChats] = useState([
-    {
-      id: 0,
-      name: "Bob",
-      lastMessage: "Meeting at 5?",
-      time: "10:30",
-      messages: messg,
-    },
-    {
-      id: 1,
-      name: "Alice",
-      lastMessage: "Hey, how are you?",
-      time: "10:30",
-      messages: [],
-    },
-  ]);
-  const [activeChat, setActiveChat] = useState(0);
+
+  const [chats, setChats] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [activeChatId, setActiveChatId] = useState(null);
 
   function setNewMessage(text: string, id: number | null) {
     const now = new Date();
@@ -63,7 +31,7 @@ export default function Home() {
     };
     setChats((prev) =>
       prev.map((chat) => {
-        if (chat?.id === activeChat) {
+        if (chat?.id === activeChatId) {
           if (id) {
             return {
               ...chat,
@@ -92,7 +60,7 @@ export default function Home() {
   const handleDeleteMessage = (message: Message) => {
     setChats((prev) =>
       prev.map((chat) => {
-        if (chat?.id === activeChat) {
+        if (chat?.id === activeChatId) {
           return {
             ...chat,
             messages: [...chat.messages].filter((el) => el.id !== message.id),
@@ -103,27 +71,33 @@ export default function Home() {
     );
   };
 
-  // useEffect(() => {
-  //   if (!user?.id) {
-  //     setUser({
-  //       id: 1,
-  //       avatarUrl: "",
-  //       email: "",
-  //       isAuthenticated: true,
-  //       name: "Alex Chi",
-  //     });
-  //   }
-  // }, [setUser, user]);
+  useEffect(() => {
+    async function getChats() {
+      const chatsData = await getChatsAPI();
+      setChats(chatsData || []);
+    }
+    getChats();
+  }, []);
+
+  useEffect(() => {
+    async function getMessages(activeChatId) {
+      const messagesData = await getMessagesAPI(activeChatId);
+      setMessages(messagesData || []);
+    }
+    if (activeChatId) {
+      getMessages(activeChatId);
+    }
+  }, [activeChatId]);
 
   function onMbBack() {
     setMbIsSelected(true);
   }
   function onSetActiveChat(activeChat: number) {
     setMbIsSelected(false);
-    setActiveChat(activeChat);
+    setActiveChatId(activeChat);
   }
 
-  // if (!user?.isAuthenticated) {
+  // if (!user?.id) {
   //   return <ChatSkeleton />;
   // }
 
@@ -132,7 +106,7 @@ export default function Home() {
       <div className={`${mbIsSelected ? "block" : "hidden"} sm:block`}>
         <ChatList
           chats={chats}
-          activeChat={activeChat}
+          activeChat={activeChatId}
           setActiveChat={onSetActiveChat}
           onAddNewChat={() => {}}
         />
@@ -140,7 +114,8 @@ export default function Home() {
 
       {!mbIsSelected ? (
         <ChatWindow
-          messages={chats[activeChat].messages}
+          userId={user?.id}
+          messages={messages}
           setNewMessage={setNewMessage}
           // handleEditMessage={handleEditMessage}
           handleDeleteMessage={handleDeleteMessage}

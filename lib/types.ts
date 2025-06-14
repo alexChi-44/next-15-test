@@ -6,9 +6,12 @@ export interface Chat {
 }
 
 export interface Message {
-  authorId: number;
+  chat_id: number;
+  content: string;
+  edited_at: string;
   id: number;
-  text: string;
-  isUser: boolean;
-  time: string;
+  is_deleted: boolean;
+  sender: null;
+  sender_id: number;
+  sent_at: string;
 }

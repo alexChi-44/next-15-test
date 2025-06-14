@@ -5,17 +5,19 @@ import { Message } from "@/lib/types";
 import MessageMenue from "./MessageBubbleMenue";
 
 interface MessageBubbleProps {
+  userId: number | null;
   message: Message;
   onEdit?: (message: Message) => void;
   onDelete?: (message: Message) => void;
 }
 
 export default function MessageBubble({
+  userId,
   message,
   onEdit,
   onDelete,
 }: MessageBubbleProps) {
-  const isUser = message.isUser;
+  const isUser = message.sender_id === userId;
   const [showMenu, setShowMenu] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
@@ -75,8 +77,8 @@ export default function MessageBubble({
         } cursor-pointer group`}
         onContextMenu={handleRightClick}
       >
-        <p>{message.text}</p>
-        <span className="text-xs opacity-70">{message.time}</span>
+        <p>{message.content}</p>
+        <span className="text-xs opacity-70">{message.edited_at}</span>
       </div>
       {showMenu && (
         <MessageMenue

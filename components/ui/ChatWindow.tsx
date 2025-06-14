@@ -5,26 +5,23 @@ import MessageBubble from "./MessageBubble/MessageBubble";
 import MessageInput from "./MessageInput";
 import { Message } from "@/lib/types";
 
-type TextMessage = {
-  id: number | null;
-  text: string;
-};
-
 export default function ChatWindow({
-  messages,
+  userId,
+  messages = [],
   setNewMessage,
   handleDeleteMessage,
   onMBBack,
 }: {
+  userId: number | null;
   messages: Message[];
   setNewMessage: (text: string, id: number | null) => void;
   handleDeleteMessage: (message: Message) => void;
   onMBBack: () => void;
 }) {
-  const [message, setMessage] = useState<TextMessage>({ id: null, text: "" });
+  const [message, setMessage] = useState<Message>({ id: null, text: "" });
   const TextInputRef = useRef<HTMLInputElement>(null);
 
-  const onEdit = (message: TextMessage) => {
+  const onEdit = (message: Message) => {
     TextInputRef.current?.focus();
     setMessage({ id: message.id, text: message.text });
   };
@@ -33,9 +30,10 @@ export default function ChatWindow({
     <div className="flex-1 flex flex-col h-full max-h-screen relative">
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-4">
-          {messages.map((message, i) => (
+          {messages.map((message) => (
             <MessageBubble
-              key={i}
+              userId={userId}
+              key={message.id}
               message={message}
               onEdit={onEdit}
               onDelete={handleDeleteMessage}
