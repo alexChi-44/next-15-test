@@ -85,8 +85,6 @@ export default function AuthPage() {
         return;
       }
 
-      console.log(user, "user token");
-
       const userData: UserData = {
         id: user?.id,
         username: user?.username,

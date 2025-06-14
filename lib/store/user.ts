@@ -14,12 +14,12 @@ interface UserStore {
 }
 
 export const useUserStore = create<UserStore>((set) => {
-  const defaultUser = userStorageHelper.getUser() || {
-    id: null,
+  const defaultUser = {
+    id: userStorageHelper.getUser()?.id || null,
     username: "",
     email: "",
   };
-  console.log(defaultUser, "storaged user");
+
   return {
     user: defaultUser,
     setUser: (user) => {
