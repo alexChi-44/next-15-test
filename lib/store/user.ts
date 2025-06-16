@@ -23,9 +23,13 @@ export const useUserStore = create<UserStore>((set) => {
   return {
     user: defaultUser,
     setUser: (user) => {
-      userStorageHelper.setUser({
-        ...user,
-      });
+      if (user) {
+        userStorageHelper.setUser({
+          id: user.id || null,
+          username: user.username,
+          email: user.email,
+        });
+      }
 
       return set({ user });
     },
