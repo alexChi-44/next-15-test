@@ -69,7 +69,7 @@ export default function AuthPage() {
     }
 
     try {
-      throw Error("error error");
+      // throw Error("error error");
       const payload = {
         username: formData.username,
         email: formData.email,

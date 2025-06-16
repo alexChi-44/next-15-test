@@ -27,7 +27,7 @@ export default function Home() {
       if (res) setMessages((prev) => [...prev, res]);
     });
   }
-
+  console.log(process.env);
   // const handleEditMessage = (message: Message) => {
   //   // In a real app, you would implement the edit functionality here
   //   // For example, open a modal or inline edit form
