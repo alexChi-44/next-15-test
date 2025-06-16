@@ -4,7 +4,7 @@ import { getAuthTokenAction } from "./utils";
 
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://6847f4d3ec44b9f3493efab2.mockapi.io/api";
+  "https://stbackend.fly.dev/api";
 
 type RequestOptions = RequestInit & {
   isFormData?: boolean;

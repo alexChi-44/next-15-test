@@ -6,7 +6,7 @@ export default function Header() {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   function setIsOpen(isOpen: boolean) {
-    console.log("set sidevar is open", isOpen);
+    console.error("set sidevar is open", isOpen);
   }
 
   useEffect(() => {

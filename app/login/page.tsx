@@ -92,9 +92,7 @@ export default function AuthPage() {
 
       setUser(userData);
       setIsSuccess(true);
-    } catch (error) {
-      console.log(error, "error !!!!");
-      setErrors({ server: error });
+    } catch {
       setIsLoading(false);
     }
   };
