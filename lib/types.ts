@@ -14,12 +14,12 @@ export interface Chat {
 }
 
 export interface Message {
-  chat_id: number;
+  chat_id?: number;
   content: string;
-  edited_at: string;
-  id: number;
-  is_deleted: boolean;
-  sender: null;
-  sender_id: number;
-  sent_at: string;
+  edited_at?: string;
+  id: number | null;
+  is_deleted?: boolean;
+  sender?: null;
+  sender_id?: number;
+  sent_at?: string;
 }

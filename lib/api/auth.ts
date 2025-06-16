@@ -4,14 +4,19 @@ import { GET, POST } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
 
 export interface UserData {
-  id?: number;
+  id: number | null;
   username: string;
   email: string;
-  isAuthenticated?: boolean;
+}
+
+export interface RegisterUserData {
+  username: string;
+  password: string;
+  email: string;
 }
 
 export const registerUserAPI = async (
-  payload: UserData
+  payload: RegisterUserData
 ): Promise<UserData | null> => {
   try {
     const response = await POST(ApiEndpoints.REGISTER, payload);
@@ -29,7 +34,7 @@ export const registerUserAPI = async (
 };
 
 export const loginUserAPI = async (
-  payload: UserData
+  payload: RegisterUserData
 ): Promise<UserData | null> => {
   try {
     const response = await POST(ApiEndpoints.LOGIN_USER, payload);

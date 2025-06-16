@@ -8,7 +8,7 @@ interface MessageBubbleProps {
   userId: number | null;
   message: Message;
   onEdit?: (message: Message) => void;
-  onDelete?: (message: Message) => void;
+  onDelete?: (id: number | null) => void;
 }
 
 export default function MessageBubble({

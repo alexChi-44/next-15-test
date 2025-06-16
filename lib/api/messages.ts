@@ -35,7 +35,6 @@ export const deleteMessageAPI = async (
 ): Promise<DeleteMessageData | null> => {
   try {
     const response = await DELETE(ApiEndpoints.MESSAGES(""), payload);
-    console.log(response, "response");
     if (response.ok) {
       return response.data;
     }

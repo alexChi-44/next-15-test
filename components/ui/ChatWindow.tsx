@@ -15,15 +15,15 @@ export default function ChatWindow({
   userId: number | null;
   messages: Message[];
   setNewMessage: (text: string, id: number | null) => void;
-  handleDeleteMessage: (id: number) => void;
+  handleDeleteMessage: (id: number | null) => void;
   onMBBack: () => void;
 }) {
-  const [message, setMessage] = useState<Message>({ id: null, text: "" });
+  const [message, setMessage] = useState<Message>({ id: null, content: "" });
   const TextInputRef = useRef<HTMLInputElement>(null);
 
   const onEdit = (message: Message) => {
     TextInputRef.current?.focus();
-    setMessage({ id: message.id, text: message.text });
+    setMessage({ id: message.id, content: message.content });
   };
 
   return (

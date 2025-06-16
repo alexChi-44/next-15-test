@@ -17,12 +17,10 @@ export default function UserProvider({
   useEffect(() => {
     async function getUser() {
       const userData = await getUserAPI();
-      console.log(userData, "userData");
       setUser(userData);
       setUserLoaded(true);
     }
     if (!userLoaded) {
-      console.log("!!!!!!!!!!!!!", userLoaded);
       getUser();
     }
   }, [setUser, userLoaded]);

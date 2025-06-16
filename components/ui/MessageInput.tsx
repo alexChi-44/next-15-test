@@ -1,3 +1,4 @@
+import { Message } from "@/lib/types";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
 export default function MessageInput({
@@ -7,14 +8,14 @@ export default function MessageInput({
   ref,
 }: {
   setNewMessage: (text: string, id: number | null) => void;
-  message: { text: string; id: number | null };
-  setMessage: Dispatch<SetStateAction<{ text: string; id: number | null }>>;
+  message: Message;
+  setMessage: Dispatch<SetStateAction<{ content: string; id: number | null }>>;
   ref: RefObject<HTMLInputElement | null>;
 }) {
   const handleSend = () => {
-    if (message.text.trim()) {
-      setNewMessage(message.text, message.id);
-      setMessage({ id: null, text: "" });
+    if (message.content.trim()) {
+      setNewMessage(message.content, message.id);
+      setMessage({ id: null, content: "" });
     }
   };
 
@@ -30,9 +31,9 @@ export default function MessageInput({
         <input
           ref={ref}
           type="text"
-          value={message.text}
+          value={message.content}
           onChange={(e) =>
-            setMessage((prev) => ({ ...prev, text: e.target.value }))
+            setMessage((prev) => ({ ...prev, content: e.target.value }))
           }
           onKeyDown={onKeyDown}
           placeholder="Type a message..."

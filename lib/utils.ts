@@ -1,5 +1,6 @@
 import { clsx, ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { UserData } from "./api/auth";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -8,9 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 export const userStorageHelper = {
   STORAGE_KEY: "telegramCloneUser",
 
-  setUser(
-    userData: { id: number; username: string; email: string } | null
-  ): { id: number; username: string; email: string } | null {
+  setUser(userData: UserData | null): UserData | null {
     try {
       if (typeof window === "undefined" || !userData) return null;
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(userData));

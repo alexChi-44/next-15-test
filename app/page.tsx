@@ -34,13 +34,13 @@ export default function Home() {
   //   console.warn("Edit message:", message.text);
   // };
 
-  const handleDeleteMessage = (id: number) => {
+  const handleDeleteMessage = (id: number | null) => {
     if (!activeChatId || !id) return;
     const payload = { chatId: activeChatId, id };
     deleteMessageAPI(payload).then((res) => {
       if (res) {
         setMessages((prev) =>
-          [...prev].filter((message) => +message?.id !== +res?.id)
+          [...prev].filter((message) => message?.id !== +res?.id)
         );
       }
     });

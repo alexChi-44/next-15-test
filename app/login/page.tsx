@@ -69,6 +69,7 @@ export default function AuthPage() {
     }
 
     try {
+      throw Error("error error");
       const payload = {
         username: formData.username,
         email: formData.email,
@@ -84,20 +85,16 @@ export default function AuthPage() {
       }
 
       const userData: UserData = {
-        id: user?.id,
+        id: user?.id || null,
         username: user?.username,
         email: user.email,
       };
 
       setUser(userData);
       setIsSuccess(true);
-      // setTimeout(() => router.push("/"), 1000);
     } catch (error) {
-      let errorMessage = "An unexpected error occurred";
-      // if (error instanceof AxiosError && error.response) {
-      //   errorMessage = error.response.data.message || errorMessage;
-      // }
-      setErrors({ server: errorMessage });
+      console.log(error, "error !!!!");
+      setErrors({ server: error });
       setIsLoading(false);
     }
   };
