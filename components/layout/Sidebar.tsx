@@ -8,13 +8,23 @@ import {
 } from "@radix-ui/react-icons";
 import { useUserStore } from "@/lib/store/user";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Sidebar() {
   const { user, logout } = useUserStore();
   const [isOpen, setIsOpen] = useState(true);
+  const pathname = usePathname();
+
   function onClose() {
     setIsOpen(false);
   }
+
+  // Define navigation items with their routes
+  const navItems = [
+    { name: "Chats", icon: FaceIcon, path: "/" },
+    { name: "Profile", icon: ImageIcon, path: "/profile" },
+  ];
 
   return (
     <>
@@ -63,14 +73,22 @@ export default function Sidebar() {
         </div>
         <nav className="flex-1 p-4">
           <ul>
-            <li className="flex items-center p-2 hover:bg-gray-200 rounded cursor-pointer">
-              <FaceIcon className="w-5 h-5 mr-2" />
-              <span>Chats</span>
-            </li>
-            <li className="flex items-center p-2 hover:bg-gray-200 rounded cursor-pointer">
-              <ImageIcon className="w-5 h-5 mr-2" />
-              <span>Profile</span>
-            </li>
+            {navItems.map((item) => {
+              const isActive = pathname === item.path;
+              return (
+                <li key={item.name}>
+                  <Link
+                    href={item.path}
+                    className={`flex items-center p-2 rounded cursor-pointer
+                      ${isActive ? "bg-gray-300" : "hover:bg-gray-200"}
+                    `}
+                  >
+                    <item.icon className="w-5 h-5 mr-2" />
+                    <span>{item.name}</span>
+                  </Link>
+                </li>
+              );
+            })}
             <li
               className="flex items-center p-2 hover:bg-gray-200 rounded cursor-pointer text-red-600"
               onClick={logout}
