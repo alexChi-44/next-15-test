@@ -5,6 +5,11 @@
 //   Autumn = "Осень",
 // }
 
+export enum ChatType {
+  Private = "private",
+  Group = "group",
+}
+
 export interface Chat {
   chat_type: string;
   created_at: string;
