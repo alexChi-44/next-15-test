@@ -41,6 +41,7 @@ export default function NewChatModal({
   }, []);
 
   const handleCreateChat = () => {
+    let users = [...selectedUsers]
     if (chatType === "private" && selectedUsers.length !== 1) {
       return; // Need exactly one user for private chat
     }
@@ -48,7 +49,7 @@ export default function NewChatModal({
       return; // Need at least one user and a group name for group chat
     }
     onCreateChat(
-      selectedUsers,
+      users,
       chatType,
       chatType === "group" ? groupName : undefined
     );

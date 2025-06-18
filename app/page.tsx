@@ -42,11 +42,11 @@ export default function Home() {
   ) => {
     console.log(selectedUsers, chatType, groupName);
     if(chatType === ChatType.Private){
-      createPrivateChatAPI({otherUserId: 1})
+      createPrivateChatAPI({otherUserId: selectedUsers[0].id})
     }
-    if(chatType === ChatType.Group){
-      createGroupChatAPI({name: 'Alex', memberIds: [1,2,3]})
-    }
+    // if(chatType === ChatType.Group){
+    //   createGroupChatAPI({name: 'Alex', memberIds: [1,2,3]})
+    // }
     setMbIsSelected(false);
   };
 

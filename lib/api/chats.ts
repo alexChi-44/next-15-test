@@ -18,9 +18,12 @@ export const getChatsAPI = async (): Promise<Chat[] | null> => {
   }
 };
 
-export const createPrivateChatAPI = async (): Promise<Chat[] | null> => {
+export const createPrivateChatAPI = async (payload): Promise<Chat[] | null> => {
+    const postData = {
+    email: "data.email",
+  };
   try {
-    const response = await POST(ApiEndpoints.PRIVATE_CHATS);
+    const response = await POST(ApiEndpoints.PRIVATE_CHATS, postData);
     console.log(response, 'private chats')
     if (response.ok) {
       return response.data;
