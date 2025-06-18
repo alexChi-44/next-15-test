@@ -2,12 +2,8 @@
 import { toast } from "react-toastify";
 import { GET, POST } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
+import { User } from "../types";
 
-export interface UserData {
-  id: number | null;
-  username: string;
-  email: string;
-}
 
 export interface RegisterUserData {
   username: string;
@@ -17,7 +13,7 @@ export interface RegisterUserData {
 
 export const registerUserAPI = async (
   payload: RegisterUserData
-): Promise<UserData | null> => {
+): Promise<User | null> => {
   try {
     const response = await POST(ApiEndpoints.REGISTER, payload);
 
@@ -35,7 +31,7 @@ export const registerUserAPI = async (
 
 export const loginUserAPI = async (
   payload: RegisterUserData
-): Promise<UserData | null> => {
+): Promise<User | null> => {
   try {
     const response = await POST(ApiEndpoints.LOGIN_USER, payload);
 
@@ -51,7 +47,7 @@ export const loginUserAPI = async (
   }
 };
 
-export const getUserAPI = async (): Promise<UserData | null> => {
+export const getUserAPI = async (): Promise<User | null> => {
   try {
     const response = await GET(ApiEndpoints.USER);
     if (response.ok) {

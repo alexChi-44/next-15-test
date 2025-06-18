@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import ChatList from "@/components/ui/ChatList";
 import ChatWindow from "@/components/ui/ChatWindow";
-import { Chat, Message } from "@/lib/types";
+import { Chat, Message, User } from "@/lib/types";
 import { useUserStore } from "@/lib/store/user";
 // import { ChatSkeleton } from "@/components/ui/skeletons/ChatSkeleton";
 import { getChatsAPI } from "@/lib/api/chats";
@@ -36,21 +36,11 @@ export default function Home() {
   // };
 
   const handleCreateChat = (
-    selectedUsers: { id: number; name: string }[],
+    selectedUsers: User[],
     chatType: "private" | "group",
     groupName?: string
   ) => {
-    const newChatId = chats.length;
-    const newChat: Chat = {
-      id: newChatId,
-      name:
-        chatType === "private"
-          ? selectedUsers[0].name
-          : groupName || "New Group",
-      chat_type: chatType,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
+
 
     setMbIsSelected(false);
   };

@@ -1,12 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { getUsersAPI } from "@/lib/api/users";
+import { User } from "@/lib/types";
 
-interface User {
-  id: number;
-  name: string;
-  avatarUrl?: string;
-}
 
 interface NewChatModalProps {
   isOpen: boolean;
@@ -18,21 +15,34 @@ interface NewChatModalProps {
   ) => void;
 }
 
+
 export default function NewChatModal({
   isOpen,
   onClose,
   onCreateChat,
 }: NewChatModalProps) {
   const [chatType, setChatType] = useState<"private" | "group">("private");
+  const [availableUsers, setAvailableUsers] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [groupName, setGroupName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const availableUsers = [];
+
   const filteredUsers = availableUsers.filter(
     (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      user?.username?.toLowerCase().includes(searchQuery.toLowerCase()) &&
       !selectedUsers.some((selected) => selected.id === user.id)
   );
+     console.log(availableUsers, 'responce')
+  useEffect(()=> {
+    async function getUsers() {
+      const users =  await getUsersAPI()
+
+        setAvailableUsers(users)
+      
+    }
+    getUsers()
+  }, [])
+
 
   const handleCreateChat = () => {
     if (chatType === "private" && selectedUsers.length !== 1) {
@@ -124,7 +134,7 @@ export default function NewChatModal({
                   key={user.id}
                   className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center gap-2"
                 >
-                  <span>{user.name}</span>
+                  <span>{user.username}</span>
                   <button
                     onClick={() =>
                       setSelectedUsers((prev) =>
@@ -155,17 +165,17 @@ export default function NewChatModal({
               className="flex items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer"
             >
               <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center mr-3">
-                {user.avatarUrl ? (
+                {user?.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
-                    alt={user.name}
+                    alt={user.username}
                     className="w-full h-full rounded-full"
                   />
                 ) : (
-                  <span className="text-gray-600">{user.name[0]}</span>
+                  <span className="text-gray-600">{user.username[0]}</span>
                 )}
               </div>
-              <span className="text-gray-800">{user.name}</span>
+              <span className="text-gray-800">{user.username}</span>
             </div>
           ))}
         </div>

@@ -12,6 +12,12 @@ export interface Chat {
   name: string | null;
   updated_at: string;
 }
+export interface User {
+  id: number | null;
+  username: string;
+  email: string;
+  avatarUrl?: string
+}
 
 export interface Message {
   chat_id?: number;

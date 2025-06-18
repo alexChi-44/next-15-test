@@ -1,11 +1,8 @@
 import { create } from "zustand";
 import { userStorageHelper } from "../utils";
+import { User } from "../types";
 
-interface User {
-  id: number | null;
-  username: string;
-  email: string;
-}
+
 
 interface UserStore {
   user: User | null;
