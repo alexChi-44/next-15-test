@@ -8,11 +8,12 @@ import { useUserStore } from "@/lib/store/user";
 import { getChatsAPI } from "@/lib/api/chats";
 import { getMessagesAPI, sendMessageAPI } from "@/lib/api/messages";
 import { deleteMessageAPI } from "../lib/api/messages";
+import NewChatModal from "@/components/ui/NewChatModal";
 
 export default function Home() {
   const { user } = useUserStore();
   const [mbIsSelected, setMbIsSelected] = useState(false);
-
+  const [isNewChatModalOpen, setIsNewChatModalOpen] = useState(false);
   const [chats, setChats] = useState<Chat[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
@@ -33,6 +34,26 @@ export default function Home() {
   //   // For example, open a modal or inline edit form
   //   console.warn("Edit message:", message.text);
   // };
+
+  const handleCreateChat = (
+    selectedUsers: { id: number; name: string }[],
+    chatType: "private" | "group",
+    groupName?: string
+  ) => {
+    const newChatId = chats.length;
+    const newChat: Chat = {
+      id: newChatId,
+      name:
+        chatType === "private"
+          ? selectedUsers[0].name
+          : groupName || "New Group",
+      chat_type: chatType,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    setMbIsSelected(false);
+  };
 
   const handleDeleteMessage = (id: number | null) => {
     if (!activeChatId || !id) return;
@@ -84,7 +105,7 @@ export default function Home() {
           chats={chats}
           activeChat={activeChatId}
           setActiveChat={onSetActiveChat}
-          onAddNewChat={() => {}}
+          onAddNewChat={() => setIsNewChatModalOpen(true)}
         />
       </div>
 
@@ -98,6 +119,13 @@ export default function Home() {
           onMBBack={onMbBack}
         />
       ) : null}
+
+      <NewChatModal
+        isOpen={isNewChatModalOpen}
+        onClose={() => setIsNewChatModalOpen(false)}
+        onCreateChat={handleCreateChat}
+        // availableUsers={availableUsers}
+      />
     </div>
   );
 }
