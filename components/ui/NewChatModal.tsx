@@ -4,7 +4,6 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { getUsersAPI } from "@/lib/api/users";
 import { User } from "@/lib/types";
 
-
 interface NewChatModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,7 +13,6 @@ interface NewChatModalProps {
     groupName?: string
   ) => void;
 }
-
 
 export default function NewChatModal({
   isOpen,
@@ -32,17 +30,15 @@ export default function NewChatModal({
       user?.username?.toLowerCase().includes(searchQuery.toLowerCase()) &&
       !selectedUsers.some((selected) => selected.id === user.id)
   );
-     console.log(availableUsers, 'responce')
-  useEffect(()=> {
+  console.log(availableUsers, "responce");
+  useEffect(() => {
     async function getUsers() {
-      const users =  await getUsersAPI()
+      const users = await getUsersAPI();
 
-        setAvailableUsers(users)
-      
+      setAvailableUsers(users);
     }
-    getUsers()
-  }, [])
-
+    getUsers();
+  }, []);
 
   const handleCreateChat = () => {
     if (chatType === "private" && selectedUsers.length !== 1) {

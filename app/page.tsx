@@ -40,8 +40,7 @@ export default function Home() {
     chatType: "private" | "group",
     groupName?: string
   ) => {
-
-
+    console.log(selectedUsers, chatType, groupName);
     setMbIsSelected(false);
   };
 

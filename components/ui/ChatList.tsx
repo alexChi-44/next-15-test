@@ -20,7 +20,7 @@ export default function ChatList({
           overscrollBehavior: "contain",
         }}
       >
-        {chats.map((chat, i) => (
+        {chats.map((chat) => (
           <div
             key={chat.id}
             className={`p-4 ${
