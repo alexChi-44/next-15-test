@@ -30,7 +30,7 @@ export default function NewChatModal({
       user?.username?.toLowerCase().includes(searchQuery.toLowerCase()) &&
       !selectedUsers.some((selected) => selected.id === user.id)
   );
-  console.log(availableUsers, "responce");
+
   useEffect(() => {
     async function getUsers() {
       const users = await getUsersAPI();

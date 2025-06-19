@@ -44,10 +44,14 @@ export default function Home() {
     chatType: ChatType,
     groupName?: string
   ) => {
-    console.log(selectedUsers, chatType, groupName);
+
     if (chatType === ChatType.Private && selectedUsers[0].id) {
       const otherUserId = +selectedUsers[0].id;
-      createPrivateChatAPI({ otherUserId });
+      createPrivateChatAPI({ otherUserId }).then(res => {
+        if (res) {
+          setChats(prev => [...prev, res]);
+        }
+      });
     }
     if (chatType === ChatType.Group && groupName) {
       const memberIds = selectedUsers.map((user) => Number(user.id));

@@ -29,10 +29,9 @@ export const getChatsAPI = async (): Promise<Chat[] | null> => {
 
 export const createPrivateChatAPI = async (
   payload: CreatePrivateChatPayload
-): Promise<Chat[] | null> => {
+): Promise<Chat | null> => {
   try {
     const response = await POST(ApiEndpoints.PRIVATE_CHATS, payload);
-    console.log(response, "private chats");
     if (response.ok) {
       return response.data;
     }
@@ -49,7 +48,7 @@ export const createGroupChatAPI = async (
 ): Promise<Chat[] | null> => {
   try {
     const response = await POST(ApiEndpoints.GROUP_CHATS, payload);
-    console.log(response, "create group chats");
+
     if (response.ok) {
       return response.data;
     }
