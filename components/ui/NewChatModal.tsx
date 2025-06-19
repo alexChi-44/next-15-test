@@ -41,7 +41,7 @@ export default function NewChatModal({
   }, []);
 
   const handleCreateChat = () => {
-    let users = [...selectedUsers]
+    const users = [...selectedUsers]
     if (chatType === "private" && selectedUsers.length !== 1) {
       return; // Need exactly one user for private chat
     }
