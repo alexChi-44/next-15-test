@@ -4,6 +4,15 @@ import { GET, POST } from "./client";
 import { ApiEndpoints } from "./api-endpoints";
 import { Chat } from "../types";
 
+interface CreatePrivateChatPayload {
+  otherUserId: number;
+}
+
+interface CreateGroutChatPayload {
+  name: string;
+  memberIds: number[];
+}
+
 export const getChatsAPI = async (): Promise<Chat[] | null> => {
   try {
     const response = await GET(ApiEndpoints.CHATS);
@@ -18,13 +27,12 @@ export const getChatsAPI = async (): Promise<Chat[] | null> => {
   }
 };
 
-export const createPrivateChatAPI = async (payload): Promise<Chat[] | null> => {
-    const postData = {
-    email: "data.email",
-  };
+export const createPrivateChatAPI = async (
+  payload: CreatePrivateChatPayload
+): Promise<Chat[] | null> => {
   try {
-    const response = await POST(ApiEndpoints.PRIVATE_CHATS, postData);
-    console.log(response, 'private chats')
+    const response = await POST(ApiEndpoints.PRIVATE_CHATS, payload);
+    console.log(response, "private chats");
     if (response.ok) {
       return response.data;
     }
@@ -36,10 +44,12 @@ export const createPrivateChatAPI = async (payload): Promise<Chat[] | null> => {
   }
 };
 
-export const createGroupChatAPI = async (): Promise<Chat[] | null> => {
+export const createGroupChatAPI = async (
+  payload: CreateGroutChatPayload
+): Promise<Chat[] | null> => {
   try {
-    const response = await POST(ApiEndpoints.GROUP_CHATS);
-    console.log(response, 'create group chats')
+    const response = await POST(ApiEndpoints.GROUP_CHATS, payload);
+    console.log(response, "create group chats");
     if (response.ok) {
       return response.data;
     }

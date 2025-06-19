@@ -5,7 +5,11 @@ import ChatWindow from "@/components/ui/ChatWindow";
 import { Chat, ChatType, Message, User } from "@/lib/types";
 import { useUserStore } from "@/lib/store/user";
 // import { ChatSkeleton } from "@/components/ui/skeletons/ChatSkeleton";
-import { createGroupChatAPI, createPrivateChatAPI, getChatsAPI } from "@/lib/api/chats";
+import {
+  createGroupChatAPI,
+  createPrivateChatAPI,
+  getChatsAPI,
+} from "@/lib/api/chats";
 import { getMessagesAPI, sendMessageAPI } from "@/lib/api/messages";
 import { deleteMessageAPI } from "../lib/api/messages";
 import NewChatModal from "@/components/ui/NewChatModal";
@@ -41,13 +45,15 @@ export default function Home() {
     groupName?: string
   ) => {
     console.log(selectedUsers, chatType, groupName);
-    if(chatType === ChatType.Private){
-      createPrivateChatAPI({otherUserId: selectedUsers[0].id})
+    if (chatType === ChatType.Private && selectedUsers[0].id) {
+      const otherUserId = +selectedUsers[0].id;
+      createPrivateChatAPI({ otherUserId });
     }
-    // if(chatType === ChatType.Group){
-    //   createGroupChatAPI({name: 'Alex', memberIds: [1,2,3]})
-    // }
-    setMbIsSelected(false);
+    if (chatType === ChatType.Group && groupName) {
+      const memberIds = selectedUsers.map((user) => user.id);
+      createGroupChatAPI({ name: groupName, memberIds });
+    }
+    setIsNewChatModalOpen(false);
   };
 
   const handleDeleteMessage = (id: number | null) => {
