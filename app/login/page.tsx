@@ -6,7 +6,8 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { loginSchema, registerSchema } from "@/lib/models";
-import { loginUserAPI, registerUserAPI, UserData } from "@/lib/api/auth";
+import { loginUserAPI, registerUserAPI } from "@/lib/api/auth";
+import { User } from "@/lib/types";
 
 interface FormErrors {
   email?: string;
@@ -84,7 +85,7 @@ export default function AuthPage() {
         return;
       }
 
-      const userData: UserData = {
+      const userData: User = {
         id: user?.id || null,
         username: user?.username,
         email: user.email,
