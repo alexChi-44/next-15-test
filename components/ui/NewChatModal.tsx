@@ -2,14 +2,14 @@
 import { useEffect, useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { getUsersAPI } from "@/lib/api/users";
-import { User } from "@/lib/types";
+import { ChatType, User } from "@/lib/types";
 
 interface NewChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   onCreateChat: (
     selectedUsers: User[],
-    chatType: "private" | "group",
+    chatType: ChatType,
     groupName?: string
   ) => void;
 }
@@ -19,7 +19,7 @@ export default function NewChatModal({
   onClose,
   onCreateChat,
 }: NewChatModalProps) {
-  const [chatType, setChatType] = useState<"private" | "group">("private");
+  const [chatType, setChatType] = useState<ChatType>(ChatType.Private);
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [groupName, setGroupName] = useState("");
@@ -58,7 +58,7 @@ export default function NewChatModal({
 
   const resetForm = () => {
     setSelectedUsers([]);
-    setChatType("private");
+    setChatType(ChatType.Private);
     setGroupName("");
     setSearchQuery("");
   };
@@ -81,11 +81,11 @@ export default function NewChatModal({
           <div className="flex space-x-4 mb-4">
             <button
               className={`flex-1 py-2 px-4 rounded-md ${
-                chatType === "private"
+                chatType === ChatType.Private
                   ? "bg-blue-500 text-white"
                   : "bg-gray-100 text-gray-700"
               }`}
-              onClick={() => setChatType("private")}
+              onClick={() => setChatType(ChatType.Private)}
             >
               Private Chat
             </button>
@@ -95,7 +95,7 @@ export default function NewChatModal({
                   ? "bg-blue-500 text-white"
                   : "bg-gray-100 text-gray-700"
               }`}
-              onClick={() => setChatType("group")}
+              onClick={() => setChatType(ChatType.Group)}
             >
               Group Chat
             </button>

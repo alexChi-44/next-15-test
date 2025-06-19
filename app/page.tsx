@@ -50,7 +50,7 @@ export default function Home() {
       createPrivateChatAPI({ otherUserId });
     }
     if (chatType === ChatType.Group && groupName) {
-      const memberIds = selectedUsers.map((user) => user.id);
+      const memberIds = selectedUsers.map((user) => Number(user.id));
       createGroupChatAPI({ name: groupName, memberIds });
     }
     setIsNewChatModalOpen(false);
